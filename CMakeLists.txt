@@ -22,7 +22,7 @@ add_executable(THE_TERMINAL_DUEGONS
     "niveles/Sala del tesoro/Sala_del_tesoro.cpp"
     "niveles/Sala de jefe de la mazmorra/Sala_de_jefe_de_la_mazmorra.cpp"
 )
-
+ 
 # 3. Incluir las cabeceras de FTXUI
 target_include_directories(THE_TERMINAL_DUEGONS PRIVATE ${ftxui_SOURCE_DIR}/include)
 

@@ -4,9 +4,16 @@
 #include "niveles/Sala del tesoro/Sala_del_tesoro.h"
 #include "niveles/Zona de pasillos/Zona_de_pasillos.h"
 #include<iostream>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <ftxui/screen/screen.hpp>
+#include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/component/component.hpp>
 
 int main(){
-
+            
     bool juego_activo = true;
 
     while (juego_activo)
@@ -50,8 +57,8 @@ int main(){
         {
             return 0;
         }
-        
 
-    return 0;
     }
+
+return 0;
 }

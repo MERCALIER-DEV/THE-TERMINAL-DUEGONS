@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\THE_TERMINAL_DUEGONS.dir/objects.a
-C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\THE_TERMINAL_DUEGONS.dir/objects.a @CMakeFiles\THE_TERMINAL_DUEGONS.dir\objects1.rsp
-C:\msys64\ucrt64\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\THE_TERMINAL_DUEGONS.dir/objects.a -Wl,--no-whole-archive -o THE_TERMINAL_DUEGONS.exe -Wl,--out-implib,libTHE_TERMINAL_DUEGONS.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\THE_TERMINAL_DUEGONS.dir\linkLibs.rsp
