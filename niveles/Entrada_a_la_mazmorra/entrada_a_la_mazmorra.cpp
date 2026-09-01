@@ -7,6 +7,9 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/component/component.hpp>
 
+using namespace ftxui;
+
+
 bool entrada_a_la_mazmorra()
 
 {
