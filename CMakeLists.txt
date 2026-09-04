@@ -16,11 +16,7 @@ FetchContent_MakeAvailable(ftxui)
 # 2. Registrar Main y los archivos de cada zona con el nuevo nombre del ejecutable
 add_executable(THE_TERMINAL_DUEGONS 
     Main.cpp
-    "niveles/Entrada_a_la_mazmorra/entrada_a_la_mazmorra.cpp"
-    "niveles/Zona de pasillos/Zona_de_pasillos.cpp"
-    "niveles/Pisos inferiore/Pisos_inferiores.cpp"
-    "niveles/Sala del tesoro/Sala_del_tesoro.cpp"
-    "niveles/Sala de jefe de la mazmorra/Sala_de_jefe_de_la_mazmorra.cpp"
+    
 )
  
 # 3. Incluir las cabeceras de FTXUI

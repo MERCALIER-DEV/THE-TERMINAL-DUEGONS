@@ -1,9 +1,6 @@
-#include "niveles/Entrada_a_la_mazmorra/entrada_a_la_mazmorra.h"
-#include "niveles/Pisos inferiore/Pisos_inferiores.h"
-#include "niveles/Sala de jefe de la mazmorra/Sala_de_jefe_de_la_mazmorra.h"
-#include "niveles/Sala del tesoro/Sala_del_tesoro.h"
-#include "niveles/Zona de pasillos/Zona_de_pasillos.h"
-#include<iostream>
+#include "nivel1.h"
+
+#include <iostream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -18,7 +15,7 @@ int main(){
 
     while (juego_activo)
     {
-        if(entrada_a_la_mazmorra())
+        if(jugar_nivel1())
         {
 
         }else
@@ -26,7 +23,7 @@ int main(){
             return 0;
         }
 
-        if(Zona_de_pasillos())
+        if()
         {
 
         }else
@@ -34,7 +31,7 @@ int main(){
             return 0;
         }
 
-        if(Pisos_inferiore())
+        if()
         {
 
         }else
@@ -42,7 +39,7 @@ int main(){
             return 0;
         }
 
-        if(Sala_del_tesoro())
+        if()
         {
 
         }else
@@ -50,7 +47,7 @@ int main(){
             return 0;
         }
 
-        if(Sala_de_jefe_de_la_mazmorra())
+        if()
         {
 
         }else
