@@ -1,3 +1,3 @@
 #pragma once
 
-bool Pisos_inferiore();
+bool jugar_nivel2();

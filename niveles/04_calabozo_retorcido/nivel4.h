@@ -1,3 +1,3 @@
 #pragma once
 
-bool Sala_del_tesoro();
+bool jugar_nivel4();

@@ -1,18 +1,12 @@
-#include "Sala_del_tesoro.h"
-#include<iostream>
+#include "nivel4.h"
+#include "sit4_1.h"
+#include "sit4_2.h"
+#include "sit4_3.h"
+#include "sit4_4.h"
+#include "sit4_5.h"
 
-
-bool Sala_del_tesoro()
-
-{
-
-// aqui viene todo sobre la entrada 
-
-
-
-
-
-
-
-    return true;
+bool jugar_nivel4(){
+    return sit4_1() && sit4_2() && sit4_3() && sit4_4() && sit4_5();
 }
+
+

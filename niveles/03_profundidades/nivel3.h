@@ -1,3 +1,3 @@
 #pragma once
 
-bool Zona_de_pasillos();
+bool jugar_nivel3();

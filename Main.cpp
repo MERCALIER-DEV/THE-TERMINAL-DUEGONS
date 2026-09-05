@@ -1,5 +1,8 @@
 #include "nivel1.h"
-
+#include "nivel2.h"
+#include "nivel3.h"
+#include "nivel4.h"
+#include "nivel5.h"
 #include <iostream>
 #include <iostream>
 #include <string>
@@ -23,7 +26,7 @@ int main(){
             return 0;
         }
 
-        if()
+        if(jugar_nivel2())
         {
 
         }else
@@ -31,7 +34,7 @@ int main(){
             return 0;
         }
 
-        if()
+        if(jugar_nivel3())
         {
 
         }else
@@ -39,7 +42,7 @@ int main(){
             return 0;
         }
 
-        if()
+        if(jugar_nivel4())
         {
 
         }else
@@ -47,7 +50,7 @@ int main(){
             return 0;
         }
 
-        if()
+        if(jugar_nivel5())
         {
 
         }else

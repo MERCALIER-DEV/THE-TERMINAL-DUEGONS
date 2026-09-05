@@ -1,3 +1,3 @@
 #pragma once
 
-bool Sala_de_jefe_de_la_mazmorra();
+bool jugar_nivel5();
