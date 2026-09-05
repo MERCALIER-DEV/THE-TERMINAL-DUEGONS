@@ -14,13 +14,18 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(ftxui)
 
 # 2. Registrar Main y los archivos de cada zona con el nuevo nombre del ejecutable
+file(GLOB_RECURSE FUENTES_NIVEL "niveles/*.cpp")
+
 add_executable(THE_TERMINAL_DUEGONS 
     Main.cpp
-    
+    ${FUENTES_NIVEL}
 )
  
 # 3. Incluir las cabeceras de FTXUI
-target_include_directories(THE_TERMINAL_DUEGONS PRIVATE ${ftxui_SOURCE_DIR}/include)
+target_include_directories(THE_TERMINAL_DUEGONS 
+PRIVATE ${ftxui_SOURCE_DIR}/include
+${CMAKE_CURRENT_SOURCE_DIR}/niveles
+)
 
 # 4. Vincular las librerías de FTXUI
 target_link_libraries(THE_TERMINAL_DUEGONS
