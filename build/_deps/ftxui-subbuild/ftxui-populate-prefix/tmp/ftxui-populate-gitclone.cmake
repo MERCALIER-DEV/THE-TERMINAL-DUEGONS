@@ -41,7 +41,7 @@ while(error_code AND number_of_tries LESS ${max_tries})
   endif()
   execute_process(
     COMMAND "C:/Users/Eliecer Mercado/AppData/Local/Programs/Git/cmd/git.exe"
-            clone --no-checkout --config "advice.detachedHead=false" "https://github.com/ArthurSonzogni/ftxui" "ftxui-src"
+            clone --no-checkout --config "advice.detachedHead=false" "https://github.com/ArthurSonzogni/FTXUI" "ftxui-src"
     WORKING_DIRECTORY "C:/Users/Eliecer Mercado/Desktop/THE TERMINAL DUEGONS/build/_deps"
     RESULT_VARIABLE error_code
     ${maybe_show_command}
@@ -52,7 +52,7 @@ if(number_of_tries GREATER 1)
   message(NOTICE "Had to git clone more than once: ${number_of_tries} times.")
 endif()
 if(error_code)
-  message(FATAL_ERROR "Failed to clone repository:\n  'https://github.com/ArthurSonzogni/ftxui'")
+  message(FATAL_ERROR "Failed to clone repository:\n  'https://github.com/ArthurSonzogni/FTXUI'")
 endif()
 
 execute_process(

@@ -7,29 +7,40 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # 1. Descargar FTXUI desde GitHub
 include(FetchContent)
 FetchContent_Declare(
-  ftxui
-  GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
-  GIT_TAG v5.0.0
+    ftxui
+    GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI
+    GIT_TAG v5.0.0
 )
 FetchContent_MakeAvailable(ftxui)
 
-# 2. Registrar Main y los archivos de cada zona con el nuevo nombre del ejecutable
+# 2. Buscar TODOS los archivos .cpp en subcarpetas de niveles
 file(GLOB_RECURSE FUENTES_NIVEL "niveles/*.cpp")
 
-add_executable(THE_TERMINAL_DUEGONS 
+add_executable(THE_TERMINAL_DUEGONS
     Main.cpp
     ${FUENTES_NIVEL}
 )
- 
-# 3. Incluir las cabeceras de FTXUI
-target_include_directories(THE_TERMINAL_DUEGONS 
-PRIVATE ${ftxui_SOURCE_DIR}/include
-${CMAKE_CURRENT_SOURCE_DIR}/niveles
+
+# 3. Detectar e incluir automáticamente TODAS las subcarpetas que tengan archivos .h
+file(GLOB_RECURSE HEADER_FILES "niveles/*.h" "niveles/*.hpp")
+
+set(NIVELES_INCLUDE_DIRS "")
+foreach(HEADER ${HEADER_FILES})
+    get_filename_component(HEADER_DIR ${HEADER} DIRECTORY)
+    list(APPEND NIVELES_INCLUDE_DIRS ${HEADER_DIR})
+endforeach()
+
+list(REMOVE_DUPLICATES NIVELES_INCLUDE_DIRS)
+
+target_include_directories(THE_TERMINAL_DUEGONS PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/niveles
+    ${NIVELES_INCLUDE_DIRS}
 )
 
 # 4. Vincular las librerías de FTXUI
-target_link_libraries(THE_TERMINAL_DUEGONS
-    PRIVATE ftxui::screen
-    PRIVATE ftxui::dom
-    PRIVATE ftxui::component
+target_link_libraries(THE_TERMINAL_DUEGONS PRIVATE
+    ftxui::screen
+    ftxui::dom
+    ftxui::component
 )

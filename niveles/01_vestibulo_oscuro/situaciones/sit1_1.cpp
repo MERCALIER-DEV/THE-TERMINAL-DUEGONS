@@ -10,4 +10,17 @@
 using namespace ftxui;
 bool sit1_1(){
 
+    auto pantalla = ScreenInteractive::TerminalOutput();
+
+    auto cabesera = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    pantalla.Loop(Renderer ([&] {
+        return cabesera;
+    }));
+
+    return true;
 }

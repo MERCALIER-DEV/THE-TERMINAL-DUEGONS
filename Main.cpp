@@ -4,7 +4,6 @@
 #include "nivel4.h"
 #include "nivel5.h"
 #include <iostream>
-#include <iostream>
 #include <string>
 #include <vector>
 #include <ftxui/screen/screen.hpp>

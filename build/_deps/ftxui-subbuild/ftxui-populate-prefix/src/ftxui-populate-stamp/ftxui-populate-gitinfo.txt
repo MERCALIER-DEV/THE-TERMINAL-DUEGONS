@@ -6,7 +6,7 @@ method=git
 command=C:/Program Files/CMake/bin/cmake.exe;-DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE;-P;C:/Users/Eliecer Mercado/Desktop/THE TERMINAL DUEGONS/build/_deps/ftxui-subbuild/ftxui-populate-prefix/tmp/ftxui-populate-gitclone.cmake
 source_dir=C:/Users/Eliecer Mercado/Desktop/THE TERMINAL DUEGONS/build/_deps/ftxui-src
 work_dir=C:/Users/Eliecer Mercado/Desktop/THE TERMINAL DUEGONS/build/_deps
-repository=https://github.com/ArthurSonzogni/ftxui
+repository=https://github.com/ArthurSonzogni/FTXUI
 remote=origin
 init_submodules=TRUE
 recurse_submodules=--recursive
