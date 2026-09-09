@@ -13,10 +13,9 @@
 
 int main(){
 
-
-    jugar_nivel1();
-
- /*          
+    
+    
+          
     bool juego_activo = true;
 
     while (juego_activo)
@@ -62,6 +61,6 @@ int main(){
         }
 
     }
-*/
+    
 return 0;
 }
