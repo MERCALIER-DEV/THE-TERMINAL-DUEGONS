@@ -16,10 +16,13 @@ enum class estadosit1_2{
         pelio,
         pasillo_seguro,
         saludo,
+
         // ramificasines pelea
         contrataque,
         defensa,
         rodilla,
+
+        // ramificaciones muerte de pelea
         muerte_c,
         muerte_r,
         muerte_d,
@@ -358,6 +361,98 @@ bool sit1_2(){
     }
     /* aqui termina la ramificacion si el jugador decide pelear con el guardia y hacer una defensa cualquiera*************************************************************************************************************************************************** */
     /******************************************************************************************************************************************************************************************************************************************************************* */
-    /*y empieza la siguiente ramificacion */
+    /*y empieza la siguiente ramificacion de si el jugador decide atacar su rodilla*/
+    if(estado_actual2 == estadosit1_2::rodilla){
+
+        auto screen_rodilla = ScreenInteractive::Fullscreen();
+
+    auto cabesera_rodilla = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_rodilla = hbox({
+        paragraph("Estas a punto de atacar su rodilla, como lo vas a hacer?"),
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_rodilla = {
+        "hacer una estocada a su rodilla",
+        "hacer un corte  limpio a su rodilla",
+        
+    };
+    int seleccion_rodilla = 0;
+
+    MenuOption menu_options_rodilla;
+    menu_options_rodilla.on_enter = [&] {
+        if (seleccion_rodilla == 0) {
+            estado_actual2 = estadosit1_2::muerte_r;
+     
+        } else if (seleccion_rodilla == 1) {
+            estado_actual2 = estadosit1_2::muerte_r;
+            
+        }
+        screen_rodilla.ExitLoopClosure()();
+    };
+
+    auto menu_rodilla = Menu(&opcines_rodilla, &seleccion_rodilla, menu_options_rodilla);
+
+    auto renderer_rodilla = Renderer(menu_rodilla, [&]() {
+        return vbox({
+            cabesera_rodilla,
+           hbox({ menu_rodilla->Render() | center | border,
+            descripcion_rodilla,
+             }) | flex | border, 
+        });
+    });
+    screen_rodilla.Loop(renderer_rodilla);
+    }
+    /************************************************************************************************************************************ */
+    /* ramificacion de muerte al atacar su rodilla************************************************************************************************/
+    if(estado_actual2 == estadosit1_2::muerte_r){
+
+        auto screen_mr = ScreenInteractive::Fullscreen();
+
+    auto cabesera_mr = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_mr = hbox({
+        paragraph("Te acercas al guardia para peliar con el, estando mas cerca ves que tiene una alabarda y una exelente armadura, el mismo se percata de tu presencia y apunta su arma hacia a ti, Que vas hacer?. "),
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_mr = {
+        "hacer un contrataque despues de bloquear su alabarda",
+        "mantener una postura defensiva",
+        "atacar una fraja de su rodilla que la armadura no alcansa a cubrir",
+    };
+    int seleccion_mr = 0;
+
+    MenuOption menu_options_mr;
+    menu_options_mr.on_enter = [&] {
+        if (seleccion_mr == 0) {
+            estado_actual2 = estadosit1_2::contrataque;
+     
+        } 
+        screen_mr.ExitLoopClosure()();
+    };
+
+    auto menu_mr = Menu(&opcines_mr, &seleccion_mr, menu_options_mr);
+
+    auto renderer_mr = Renderer(menu_mr, [&]() {
+        return vbox({
+            cabesera_mr,
+           hbox({ menu_mr->Render() | center | border,
+            descripcion_mr,
+             }) | flex | border, 
+        });
+    });
+    screen_mr.Loop(renderer_mr);
+    if(estado_actual2 == estadosit1_2::salir) return false;
+    }
+    //****************************************************************************************************************************************** */
+    /*terminada las ramificacines de pelea ********************************************************************************************************/
    return true; 
 }
