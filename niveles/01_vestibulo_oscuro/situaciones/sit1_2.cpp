@@ -223,5 +223,50 @@ bool sit1_2(){
     }
     /* aqui termima la ramificacion si el jugador decide pelear con el guardia y hacer un contra ataque*************************************************************************************************************************************************** */ 
     /* *************************************************************************************************************************************************** */
+    //y la ramificacion en caso de defensa****************************************************************************************************************************************************/
+    if(estado_actual2 == estadosit1_2::defensa){
+
+        auto screen_defensa = ScreenInteractive::Fullscreen();
+
+    auto cabesera_defensa = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_defensa = hbox({
+        paragraph("Estas a punto de defenderte, como lo vas a hacer?"),
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_defensa = {
+        "usar un escudo para bloquear su alabarda",
+        "tomar distancia y mantener una postura defensiva",
+    };
+    int seleccion_defensa = 0;
+
+    MenuOption menu_options_defensa;
+    menu_options_defensa.on_enter = [&] {
+        if (seleccion_defensa == 0) {
+            estado_actual2 = estadosit1_2::muerte_d;
+     
+        } else if (seleccion_defensa == 1) {
+            estado_actual2 = estadosit1_2::muerte_d;
+            
+        }
+        screen_defensa.ExitLoopClosure()();
+    };
+
+    auto menu_defensa = Menu(&opcines_defensa, &seleccion_defensa, menu_options_defensa);
+
+    auto renderer_defensa = Renderer(menu_defensa, [&]() {
+        return vbox({
+            cabesera_defensa,
+           hbox({ menu_defensa->Render() | center | border,
+            descripcion_defensa,
+             }) | flex | border, 
+        });
+    });
+    screen_defensa.Loop(renderer_defensa);
+    }
    return true; 
 }
