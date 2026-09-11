@@ -12,21 +12,34 @@ using namespace ftxui;
 
 enum class estadosit1_2{
         // estados normales
+
         vivo,
         pelio,
         pasillo_seguro,
         saludo,
 
         // ramificasines pelea
+
         contrataque,
         defensa,
         rodilla,
 
         // ramificaciones muerte de pelea
+
         muerte_c,
         muerte_r,
         muerte_d,
         muerte_d1,
+
+        // ramificaciones de pasillo seguro
+
+        caminando,
+        observar_bien,
+        devolver,
+
+        // ramificacines de muerte de caminando
+
+        muerte_ca,
 
         salir,
     };
@@ -454,5 +467,153 @@ bool sit1_2(){
     }
     //****************************************************************************************************************************************** */
     /*terminada las ramificacines de pelea ********************************************************************************************************/
+    /*empiesa las ramificasiones de recorer el pasillo seguro**********************************************************************************************************************/
+
+    if(estado_actual2 == estadosit1_2::pasillo_seguro){
+
+        auto screen_ps = ScreenInteractive::Fullscreen();
+
+    auto cabesera_ps = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_ps = hbox({
+        paragraph("decides ir con sigilo por el pasillo seguro, ha pasado un rato, precientes peligro con tu instinto, que vas a hacer?"),
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_ps = {
+        "Seguir caminando",
+        "Observar muy bien al piso al caminar",
+        "Devolverte por el pasillo",
+    };
+    int seleccion_ps = 0;
+
+    MenuOption menu_options_ps;
+    menu_options_ps.on_enter = [&] {
+        if (seleccion_ps == 0) {
+            estado_actual2 = estadosit1_2::caminando;
+     
+        } else if (seleccion_ps == 1) {
+            estado_actual2 = estadosit1_2::observar_bien;
+            
+        } else if (seleccion_ps == 2){
+             estado_actual2 = estadosit1_2::devolver;
+
+        } 
+        screen_ps.ExitLoopClosure()();
+    };
+
+    auto menu_ps = Menu(&opcines_ps, &seleccion_ps, menu_options_ps);
+
+    auto renderer_ps = Renderer(menu_ps, [&]() {
+        return vbox({
+            cabesera_ps,
+           hbox({ menu_ps->Render() | center | border,
+            descripcion_ps,
+             }) | flex | border, 
+        });
+    });
+    screen_ps.Loop(renderer_ps);
+    }
+    /* ****************************************************************************************************************************************************** 
+    se empisan las ramificaciones de esa caminar por el pasillo seguro *********************************************************************************** 
+    ramificacion en caso de seguir caminando************************************************************************************************************** */
+
+    if(estado_actual2 == estadosit1_2::caminando){
+
+        auto screen_c = ScreenInteractive::Fullscreen();
+
+    auto cabesera_c = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_c = hbox({
+        paragraph("sigues caminando por el pasillo, tu instito te sigue diciendo que hay peligro y es mas fuerte que antes, que vas hacer?"),
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_c = {
+        "Seguir caminando",
+        "caminar con cautela",
+    };
+    int seleccion_c = 0;
+
+    MenuOption menu_options_c;
+    menu_options_c.on_enter = [&] {
+        if (seleccion_c == 0) {
+            estado_actual2 = estadosit1_2::muerte_ca;
+     
+        } else if (seleccion_c == 1) {
+            estado_actual2 = estadosit1_2::muerte_ca;
+            
+        } 
+        screen_c.ExitLoopClosure()();
+    };
+
+    auto menu_c = Menu(&opcines_c, &seleccion_c, menu_options_c);
+
+    auto renderer_c = Renderer(menu_c, [&]() {
+        return vbox({
+            cabesera_c,
+           hbox({ menu_c->Render() | center | border,
+            descripcion_c,
+             }) | flex | border, 
+        });
+    });
+    screen_c.Loop(renderer_c);
+    }
+    /************************************************************************************************************************************* 
+     muerte al seguir caminando *******************************************************************************************************************/
+     if(estado_actual2 == estadosit1_2::muerte_ca){
+
+        auto screen_mca = ScreenInteractive::Fullscreen();
+
+    auto cabesera_mca = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_mca = hbox({
+        paragraph("Te acercas al guardia para peliar con el, estando mas cerca ves que tiene una alabarda y una exelente armadura, el mismo se percata de tu presencia y apunta su arma hacia a ti, Que vas hacer?. "),
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_mca = {
+        "hacer un contrataque despues de bloquear su alabarda",
+        "mantener una postura defensiva",
+        "atacar una fraja de su rodilla que la armadura no alcansa a cubrir",
+    };
+    int seleccion_mca = 0;
+
+    MenuOption menu_options_mca;
+    menu_options_mca.on_enter = [&] {
+        if (seleccion_mca == 0) {
+            estado_actual2 = estadosit1_2::contrataque;
+     
+        } else if (seleccion_mca == 1) {
+            estado_actual2 = estadosit1_2::defensa;
+            
+        } else if (seleccion_mca == 2){
+             estado_actual2 = estadosit1_2::rodilla;
+
+        } 
+        screen_mca.ExitLoopClosure()();
+    };
+
+    auto menu_mca = Menu(&opcines_mca, &seleccion_mca, menu_options_mca);
+
+    auto renderer_mca = Renderer(menu_mca, [&]() {
+        return vbox({
+            cabesera_mca,
+           hbox({ menu_mca->render() | center | border,
+            descripcion_mca,
+             }) | flex | border, 
+        });
+    });
+    screen_mca.Loop(renderer_mca);
+    }
    return true; 
 }
