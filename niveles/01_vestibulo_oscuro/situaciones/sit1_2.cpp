@@ -23,6 +23,7 @@ enum class estadosit1_2{
         muerte_c,
         muerte_r,
         muerte_d,
+        muerte_d1,
 
         salir,
     };
@@ -250,7 +251,7 @@ bool sit1_2(){
             estado_actual2 = estadosit1_2::muerte_d;
      
         } else if (seleccion_defensa == 1) {
-            estado_actual2 = estadosit1_2::muerte_d;
+            estado_actual2 = estadosit1_2::muerte_d1;
             
         }
         screen_defensa.ExitLoopClosure()();
@@ -268,5 +269,95 @@ bool sit1_2(){
     });
     screen_defensa.Loop(renderer_defensa);
     }
+    //****************************************************************************************************************************
+    // ramificacion en caso de muerte por defensa con escudo***********************************************************************************************
+    if(estado_actual2 == estadosit1_2::muerte_d){
+
+        auto screen_md = ScreenInteractive::Fullscreen();
+
+    auto cabesera_md = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_md = hbox({
+        paragraph("A pesar de tu defensa, el guardia atraveso tu escudo con su alabarda y te clava en el pecho y mueres."),
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_md = {
+        "Salir",
+    };
+    int seleccion_md = 0;
+
+    MenuOption menu_options_md;
+    menu_options_md.on_enter = [&] {
+        if (seleccion_md == 0) {
+            estado_actual2 = estadosit1_2::salir;
+     
+        } 
+        screen_md.ExitLoopClosure()();
+    };
+
+    auto menu_md = Menu(&opcines_md, &seleccion_md, menu_options_md);
+
+    auto renderer_md = Renderer(menu_md, [&]() {
+        return vbox({
+            cabesera_md,
+           hbox({ menu_md->Render() | center | border,
+            descripcion_md,
+             }) | flex | border, 
+        });
+    });
+    screen_md.Loop(renderer_md);
+    if(estado_actual2 == estadosit1_2::salir) return false;
+    }
+    //****************************************************************************************************************************
+    // ramificacion en caso de muerte por defensa con distanciamiento***********************************************************************************************
+    if(estado_actual2 == estadosit1_2::muerte_d1){
+
+        auto screen_md1 = ScreenInteractive::Fullscreen();
+
+    auto cabesera_md1 = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_md1 = hbox({
+        paragraph("A pesar de estar a distancia, el guardia lanza su alabarda y te atraviesa el pecho y mueres."),
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_md1 = {
+        "Salir",
+        
+    };
+    int seleccion_md1 = 0;
+
+    MenuOption menu_options_md1;
+    menu_options_md1.on_enter = [&] {
+        if (seleccion_md1 == 0) {
+            estado_actual2 = estadosit1_2::salir;
+     
+        } 
+        screen_md1.ExitLoopClosure()();
+    };
+
+    auto menu_md1 = Menu(&opcines_md1, &seleccion_md1, menu_options_md1);
+
+    auto renderer_md1 = Renderer(menu_md1, [&]() {
+        return vbox({
+            cabesera_md1,
+           hbox({ menu_md1->Render() | center | border,
+            descripcion_md1,
+             }) | flex | border, 
+        });
+    });
+    screen_md1.Loop(renderer_md1);
+    if(estado_actual2 == estadosit1_2::salir) return false;
+    }
+    /* aqui termina la ramificacion si el jugador decide pelear con el guardia y hacer una defensa cualquiera*************************************************************************************************************************************************** */
+    /******************************************************************************************************************************************************************************************************************************************************************* */
+    /*y empieza la siguiente ramificacion */
    return true; 
 }
