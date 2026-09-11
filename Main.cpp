@@ -27,7 +27,8 @@ int main(){
         {
             return 0;
         }
-
+    }
+/*
         if(jugar_nivel2())
         {
 
@@ -60,7 +61,7 @@ int main(){
             return 0;
         }
 
-    }
+    */
     
 return 0;
 }

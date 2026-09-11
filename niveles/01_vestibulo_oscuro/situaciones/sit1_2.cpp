@@ -149,7 +149,7 @@ bool sit1_2(){
    
     std::vector<std::string> opcines_c = {
         "Realizar un estocada",
-        "Hacer un giro con la espado",
+        "Hacer un giro con la espada",
         
     };
     int seleccion_c = 0;
@@ -221,7 +221,7 @@ bool sit1_2(){
     screen_mc.Loop(renderer_mc);
     if(estado_actual2 == estadosit1_2::salir) return false;
     }
-    /* aqui ter,ima la ramificacion si el jugador decide pelear con el guardia y hacer un contra ataque*************************************************************************************************************************************************** */ 
+    /* aqui termima la ramificacion si el jugador decide pelear con el guardia y hacer un contra ataque*************************************************************************************************************************************************** */ 
     /* *************************************************************************************************************************************************** */
    return true; 
 }
