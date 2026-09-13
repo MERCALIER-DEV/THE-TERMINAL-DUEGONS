@@ -98,6 +98,8 @@ bool sit1_2(){
         });
     });
     screen2.Loop(renderer2);
+
+    if(estado_actual2 == estadosit1_2::vivo)return true;
     
    // si eligio pelear ********************************************************************************************************************************
    //************************************************************************************************************************************************ */
@@ -777,7 +779,7 @@ bool sit1_2(){
 
     auto menu_mde = Menu(&opcines_mde, &seleccion_mde, menu_options_mde);
 
-    auto renderer_mde = Renderer(menu_de, [&]() {
+    auto renderer_mde = Renderer(menu_mde, [&]() {
         return vbox({
             cabesera_mde,
            hbox({ menu_mde->Render() | center | border,
@@ -789,5 +791,6 @@ bool sit1_2(){
     if (estado_actual2 == estadosit1_2::salir)return false;
     }
     /********************************************************************************************************************************************* */
+
    return true; 
 }
