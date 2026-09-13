@@ -40,6 +40,8 @@ enum class estadosit1_2{
         // ramificacines de muerte de caminando
 
         muerte_ca,
+        muerte_ob,
+        muerte_de,
 
         salir,
     };
@@ -578,28 +580,20 @@ bool sit1_2(){
     })  |border;
 
     auto descripcion_mca = hbox({
-        paragraph("Te acercas al guardia para peliar con el, estando mas cerca ves que tiene una alabarda y una exelente armadura, el mismo se percata de tu presencia y apunta su arma hacia a ti, Que vas hacer?. "),
+        paragraph("despues de seguir caminando un rato mas resulta que pisas una trampa que dispara un dardo venenoso y te impacta en el pecho mueriendo.")
     }) | flex | border;
    
     std::vector<std::string> opcines_mca = {
-        "hacer un contrataque despues de bloquear su alabarda",
-        "mantener una postura defensiva",
-        "atacar una fraja de su rodilla que la armadura no alcansa a cubrir",
+        "Salir",
     };
     int seleccion_mca = 0;
 
     MenuOption menu_options_mca;
     menu_options_mca.on_enter = [&] {
         if (seleccion_mca == 0) {
-            estado_actual2 = estadosit1_2::contrataque;
+            estado_actual2 = estadosit1_2::salir;
      
-        } else if (seleccion_mca == 1) {
-            estado_actual2 = estadosit1_2::defensa;
-            
-        } else if (seleccion_mca == 2){
-             estado_actual2 = estadosit1_2::rodilla;
-
-        } 
+        }
         screen_mca.ExitLoopClosure()();
     };
 
@@ -608,12 +602,102 @@ bool sit1_2(){
     auto renderer_mca = Renderer(menu_mca, [&]() {
         return vbox({
             cabesera_mca,
-           hbox({ menu_mca->render() | center | border,
+           hbox({ menu_mca->Render() | center | border,
             descripcion_mca,
              }) | flex | border, 
         });
     });
     screen_mca.Loop(renderer_mca);
+    if(estado_actual2 == estadosit1_2::salir) return false;
     }
+    /*********************************************************************************************************** */
+    /*ramificacion en caso de caminar observando bien*******************************************************************************************************************/
+    if(estado_actual2 == estadosit1_2::observar_bien){
+
+        auto screen_ob = ScreenInteractive::Fullscreen();
+
+    auto cabesera_ob = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_ob = hbox({
+        paragraph("Caminas viendo al piso de forma detallada en busca de trampas para evitarlas, que vas a hacer?")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_ob = {
+        "Caminar relajado",
+        "seguir caminando con cautela",
+    };
+    int seleccion_ob = 0;
+
+    MenuOption menu_options_ob;
+    menu_options_ob.on_enter = [&] {
+        if (seleccion_ob == 0) {
+            estado_actual2 = estadosit1_2::muerte_ob;
+        }else if (seleccion_ob == 1){
+            estado_actual2 = estadosit1_2::muerte_ob;
+        }
+        screen_ob.ExitLoopClosure()();
+    };
+
+    auto menu_ob = Menu(&opcines_ob, &seleccion_ob, menu_options_ob);
+
+    auto renderer_ob = Renderer(menu_ob, [&]() {
+        return vbox({
+            cabesera_ob,
+           hbox({ menu_ob->Render() | center | border,
+            descripcion_ob,
+             }) | flex | border, 
+        });
+    });
+    screen_ob.Loop(renderer_ob);
+    }
+    /* ****************************************************************************************************************************************************** 
+    muerte al observar con cautela o con relajo*********************************************************************************************************** */
+    if(estado_actual2 == estadosit1_2::muerte_ob){
+
+        auto screen_mob = ScreenInteractive::Fullscreen();
+
+    auto cabesera_mob = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_mob = hbox({
+        paragraph("Caminas un rato mas, a pesar de observar bien el piso pisas una placa de precion que dispara un dardo venenoso y mueres")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_mob = {
+        "salir",
+       
+    };
+    int seleccion_mob = 0;
+
+    MenuOption menu_options_mob;
+    menu_options_mob.on_enter = [&] {
+        if (seleccion_mob == 0) {
+            estado_actual2 = estadosit1_2::salir;
+        }
+        screen_mob.ExitLoopClosure()();
+    };
+
+    auto menu_mob = Menu(&opcines_mob, &seleccion_mob, menu_options_mob);
+
+    auto renderer_mob = Renderer(menu_mob, [&]() {
+        return vbox({
+            cabesera_mob,
+           hbox({ menu_mob->Render() | center | border,
+            descripcion_mob,
+             }) | flex | border, 
+        });
+    });
+    screen_mob.Loop(renderer_mob);
+    if (estado_actual2 == estadosit1_2::salir) return false;
+    }
+    /* ***************************************************************************************************************************************** 
+    */
    return true; 
 }
