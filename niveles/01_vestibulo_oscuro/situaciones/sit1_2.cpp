@@ -698,6 +698,96 @@ bool sit1_2(){
     if (estado_actual2 == estadosit1_2::salir) return false;
     }
     /* ***************************************************************************************************************************************** 
-    */
+    la ultima ramificacion de pasillo seguro devolverte ****************************************************************************************** */
+    if(estado_actual2 == estadosit1_2::devolver){
+
+        auto screen_de = ScreenInteractive::Fullscreen();
+
+    auto cabesera_de = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_de = hbox({
+        paragraph("Desides devolverte por el mismo pasillo, derrepente te encuentras con el mismi guardia de hace rato y esta en posicion de ataque, que vas ha hacer?")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_de = {
+        "atacarlo de frente",
+        "Huir de el",
+        "defenderte y contraatacar",
+    };
+    int seleccion_de = 0;
+
+    MenuOption menu_options_de;
+    menu_options_de.on_enter = [&] {
+        if (seleccion_de == 0) {
+            estado_actual2 = estadosit1_2::muerte_de;
+
+        }else if (seleccion_de == 1){
+            estado_actual2 = estadosit1_2::muerte_de;
+
+        }else if (seleccion_de == 2){
+            estado_actual2 = estadosit1_2::muerte_de;
+        }
+        screen_de.ExitLoopClosure()();
+    };
+
+    auto menu_de = Menu(&opcines_de, &seleccion_de, menu_options_de);
+
+    auto renderer_de = Renderer(menu_de, [&]() {
+        return vbox({
+            cabesera_de,
+           hbox({ menu_de->Render() | center | border,
+            descripcion_de,
+             }) | flex | border, 
+        });
+    });
+    screen_de.Loop(renderer_de);
+    }
+    /* **************************************************************************************************************** 
+    muerte de la ramificacion de devolver ***************************************************************************** */
+    if(estado_actual2 == estadosit1_2::muerte_de){
+
+        auto screen_mde = ScreenInteractive::Fullscreen();
+
+    auto cabesera_mde = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_mde = hbox({
+        paragraph("El guardia recciona demacido rapido antes de que puedas hacer algo por salvarte y mueres")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_mde = {
+        "Salir",
+    };
+    int seleccion_mde = 0;
+
+    MenuOption menu_options_mde;
+    menu_options_mde.on_enter = [&] {
+        if (seleccion_mde == 0) {
+            estado_actual2 = estadosit1_2::salir;
+        }
+        screen_mde.ExitLoopClosure()();
+    };
+
+    auto menu_mde = Menu(&opcines_mde, &seleccion_mde, menu_options_mde);
+
+    auto renderer_mde = Renderer(menu_de, [&]() {
+        return vbox({
+            cabesera_mde,
+           hbox({ menu_mde->Render() | center | border,
+            descripcion_mde,
+             }) | flex | border, 
+        });
+    });
+    screen_mde.Loop(renderer_mde);
+    if (estado_actual2 == estadosit1_2::salir)return false;
+    }
+    /********************************************************************************************************************************************* */
    return true; 
 }
