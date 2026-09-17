@@ -22,6 +22,7 @@ int main(){
     {
         if(jugar_nivel1())
         {
+            juego_activo = false;
 
         }else
         {
