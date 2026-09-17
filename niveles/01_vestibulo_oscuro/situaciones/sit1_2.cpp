@@ -43,6 +43,10 @@ enum class estadosit1_2{
         muerte_ob,
         muerte_de,
 
+        //ramificaciones de muerte saludando
+
+        muerte_s
+
         salir,
     };
 
@@ -98,7 +102,7 @@ bool sit1_2(){
         });
     });
     screen2.Loop(renderer2);
-
+    // lo primero a evaluar en caso de haya elegido la opcion correcta
     if(estado_actual2 == estadosit1_2::vivo)return true;
     
    // si eligio pelear ********************************************************************************************************************************
@@ -790,8 +794,56 @@ bool sit1_2(){
     screen_mde.Loop(renderer_mde);
     if (estado_actual2 == estadosit1_2::salir)return false;
     }
-    /********************************************************************************************************************************************* */
-    /* comiensa la ultima ramificacion la de saludar al guardia ***********************************************************************************/
-    /********************************************************************************************************************************************** */
+    /* ******************************************************************************************************************************************** 
+     comiensa la ultima ramificacion la de saludar al guardia ********************************************************************************** 
+     ********************************************************************************************************************************************* */
+    if(estado_actual2 == estadosit1_2::saludo){
+
+        auto screen_s = ScreenInteractive::Fullscreen();
+
+    auto cabesera_s = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_s = hbox({
+        paragraph("Saludas al guardia, el mismo entra en alerta y corre con su alabarda apuntandote hacia tu pocion, que vas a hacer?") 
+       
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_s = {
+        "defenderte con tu escudo",
+        "atacar cuando este lo suficientemente cerca"
+    };
+    int seleccion_s = 0;
+
+    MenuOption menu_options_s;
+    menu_options_s.on_enter = [&] {
+        if (seleccion_s == 0) {
+            estado_actual2 = estadosit1_2::muerte_s;
+        }elce if (seleccion_s == 0) {
+            estado_actual2 = estadosit1_2::muerte_s;
+        }
+        screen_s.ExitLoopClosure()();
+    };
+
+    auto menu_s = Menu(&opcines_s, &seleccion_s, menu_options_s);
+
+    auto renderer_s = Renderer(menu_s, [&]() {
+        return vbox({
+            cabesera_s,
+           hbox({ menu_s->Render() | center | border,
+            descripcion_s,
+             }) | flex | border, 
+        });
+    });
+    screen_s.Loop(renderer_s);
+    }
+    /* *************************************************************************************************************************************************************** 
+    muerte de ramificacion de saludar ********************************************************************************************************************************** */
+
+    
+
    return true; 
 }
