@@ -45,7 +45,7 @@ enum class estadosit1_2{
 
         //ramificaciones de muerte saludando
 
-        muerte_s
+        muerte_s,
 
         salir,
     };
@@ -840,10 +840,51 @@ bool sit1_2(){
     });
     screen_s.Loop(renderer_s);
     }
-    /* *************************************************************************************************************************************************************** 
+    /* ******************************************************************************************************************************************************************** 
     muerte de ramificacion de saludar ********************************************************************************************************************************** */
-
     
+    if(estado_actual2 == estadosit1_2::muerte_s){
+
+        auto screen_ms = ScreenInteractive::Fullscreen();
+
+    auto cabesera_ms = hbox({
+        text("Version: " + num_vercion) | flex,
+        text("THE TERMINAL DUEGONS") | flex,
+        text("nivel 1: El vestibulo oscuro") | flex,  
+    })  |border;
+
+    auto descripcion_ms = hbox({
+        paragraph("El guardia reacciona mas rapido antes de que hagas algo y te clava su alabarda en tu pecho y mueres (de verdad hay que ser muy pendejo para saludar a un tipo peligroso en un sitio peligroso)") 
+       
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_ms = {
+        "salir",
+    };
+    int seleccion_ms = 0;
+
+    MenuOption menu_options_ms;
+    menu_options_ms.on_enter = [&] {
+        if (seleccion_sm == 0) {
+            estado_actual2 = estadosit1_2::salir;
+        }
+        screen_ms.ExitLoopClosure()();
+    };
+
+    auto menu_ms = Menu(&opcines_ms, &seleccion_ms, menu_options_ms);
+
+    auto renderer_ms = Renderer(menu_ms, [&]() {
+        return vbox({
+            cabesera_ms,
+           hbox({ menu_ms->Render() | center | border,
+            descripcion_ms,
+             }) | flex | border, 
+        });
+    });
+    screen_ms.Loop(renderer_ms);
+    if (estado_actual2 == estadosit1_2::salir)return false;
+    }
+
 
    return true; 
 }
