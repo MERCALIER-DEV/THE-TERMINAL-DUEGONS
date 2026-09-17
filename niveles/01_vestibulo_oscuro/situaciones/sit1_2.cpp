@@ -822,7 +822,7 @@ bool sit1_2(){
     menu_options_s.on_enter = [&] {
         if (seleccion_s == 0) {
             estado_actual2 = estadosit1_2::muerte_s;
-        }elce if (seleccion_s == 0) {
+        }else if (seleccion_s == 0) {
             estado_actual2 = estadosit1_2::muerte_s;
         }
         screen_s.ExitLoopClosure()();
@@ -865,7 +865,7 @@ bool sit1_2(){
 
     MenuOption menu_options_ms;
     menu_options_ms.on_enter = [&] {
-        if (seleccion_sm == 0) {
+        if (seleccion_ms == 0) {
             estado_actual2 = estadosit1_2::salir;
         }
         screen_ms.ExitLoopClosure()();
