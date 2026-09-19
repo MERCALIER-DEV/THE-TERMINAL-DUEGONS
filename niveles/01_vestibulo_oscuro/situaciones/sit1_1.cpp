@@ -6,6 +6,7 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/component/component.hpp>
 #include "sit1_1.h"
+#include "cabesera.h"
 #include "num_vercion.h"
 using namespace ftxui;
 
@@ -20,12 +21,6 @@ enum class estadosit1_1{
 bool sit1_1(){
 
     auto screen = ScreenInteractive::Fullscreen();
-
-    auto cabesera = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion = hbox({
         paragraph("Estas en el vestibulo oscuro despues de un largo viaje,pensando en si realemente tenias que ir en lugar tan peligroso, ahora debes tomar una decision si irte de este sitio o entrar."),
@@ -54,7 +49,7 @@ bool sit1_1(){
 
     auto renderer = Renderer(menu, [&]() {
         return vbox({
-            cabesera,
+            cabesera1,
            hbox({ menu->Render() | center | border,
             descripcion,
              }) | flex | border, 
@@ -70,12 +65,6 @@ bool sit1_1(){
      // se evalua al jugador para eligir la muerte apropiada segun sus decisiones    
     }else if  (estado_actual == estadosit1_1::escapo){
         auto screen_esp = ScreenInteractive::Fullscreen();
-
-    auto cabesera_esp = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_esp = hbox({
         paragraph("Decidiste ir te de este lugar, pero en tu huida te encuentras con un troll que te quiere matar por tu cobardia, como respondes"),
@@ -101,7 +90,7 @@ bool sit1_1(){
 
     auto renderer_esp = Renderer(menu_esp, [&]() {
         return vbox({
-            cabesera_esp,
+            cabesera1,
            hbox({ menu_esp->Render() | center | border,
             descripcion_esp,
              }) | flex | border, 
@@ -112,11 +101,6 @@ bool sit1_1(){
     // si eligio 0 se ejucuta esta rama
     }if (estado_actual == estadosit1_1::muerto1) {
         auto screen0 = ScreenInteractive::Fullscreen();
-        auto cabesera0 = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion0 = hbox({
         paragraph("Decidiste enfrentar al troll con tu espada y tu escudo, pero el troll era demasiado fuerte y te mato, ahora estas muerto."),
@@ -138,7 +122,7 @@ bool sit1_1(){
 
     auto renderer0 = Renderer(menu0, [&]() {
         return vbox({
-            cabesera0,
+            cabesera1,
            hbox({ menu0->Render() | center | border,
             descripcion0,
              }) | flex | border, 
@@ -150,11 +134,6 @@ bool sit1_1(){
     // si eligio 1 se ejecuta esta rama
     }else if (estado_actual == estadosit1_1::muerto2) {
         auto screen1 = ScreenInteractive::Fullscreen();
-        auto cabesera1 = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion1 = hbox({
         paragraph("Decidiste evadir al troll y correr hacia la salida, pero el troll te alcanzo y te mato, ahora estas muerto."),

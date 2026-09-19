@@ -7,5 +7,5 @@
 #include <iostream>
 
 bool jugar_nivel1(){
-        return sit1_1() && sit1_2();
+        return sit1_1() && sit1_2() && sit1_3();
 }    
