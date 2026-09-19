@@ -7,7 +7,7 @@
 #include <ftxui/component/component.hpp>
 #include "sit1_1.h"
 #include "cabesera.h"
-#include "num_vercion.h"
+
 using namespace ftxui;
 
 enum class estadosit1_1{

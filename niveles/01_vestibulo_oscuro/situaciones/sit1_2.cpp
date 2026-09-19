@@ -7,6 +7,7 @@
 #include <ftxui/component/component.hpp>
 #include "sit1_2.h"
 #include "num_vercion.h"
+#include "cabesera.h"
 
 using namespace ftxui;
 
