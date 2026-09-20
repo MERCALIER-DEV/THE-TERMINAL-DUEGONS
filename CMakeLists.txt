@@ -17,12 +17,13 @@ FetchContent_MakeAvailable(ftxui)
 file(GLOB_RECURSE FUENTES_NIVEL "niveles/*.cpp")
 
 add_executable(THE_TERMINAL_DUEGONS
-    Main.cpp
+    src/Main.cpp
     ${FUENTES_NIVEL}
 )
 
 # 3. Detectar e incluir automáticamente TODAS las subcarpetas que tengan archivos .h
 file(GLOB_RECURSE HEADER_FILES "niveles/*.h" "niveles/*.hpp")
+file(GLOB_RECURSE FUENTES_SRC "src/*.cpp")
 
 set(NIVELES_INCLUDE_DIRS "")
 foreach(HEADER ${HEADER_FILES})
@@ -33,8 +34,9 @@ endforeach()
 list(REMOVE_DUPLICATES NIVELES_INCLUDE_DIRS)
 
 target_include_directories(THE_TERMINAL_DUEGONS PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/niveles
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${NIVELES_INCLUDE_DIRS}
 )
 
