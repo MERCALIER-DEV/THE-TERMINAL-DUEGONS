@@ -22,11 +22,20 @@ enum class estadosit1_3{
     // puerta_izq, este estado es vivo por que ese es el correcto
 
     // ramificaciones de puerta de hierro
+
     pelear_d,
     pelear_b,
     pelear_a,
 
+    // ramificaines de muerte de puerta de hierro
 
+    muerte_pd,
+    muerte_pb,
+    muerte_pa,
+
+
+
+    salir,
 };
 
 bool sit1_3(){
@@ -179,7 +188,93 @@ bool sit1_3(){
     screen_ph.Loop(renderer_ph);
     }
 
+    /* ******************************************************************************************************************************************************************* 
+    ramicacion en caso de pelear con el duende ****************************************************************************************************************************************************** */
+    
+    if (estado_actual3 == estadosit1_3::pelear_d;)
+    {
+    
+    auto screen_pd = ScreenInteractive::Fullscreen();
 
+    auto descripcion_pd = hbox({
+        paragraph("dices con voz alta voy a pelear con el duende se siente imponencia en la atmosfera, el duende da un paso adelante saca su daga y sonrie de forma espantosa, los demas monstruos se van a otra parte, que vas hacer")
+    });
+   
+    std::vector<std::string> opcines_pd = {
+        "permancer con tu espada y escudo al frente",
+        "solo atacar al duende",
+        "defenderte hasta un contraataque o desgaste ",
+    };
+    int seleccion_pd = 0;
+    MenuOption menu_options_pd;
+    menu_options_pd.on_enter = [&] {
+        if (seleccion_pd == 0)
+        {
+            estado_actual3 = estadosit1_3::muerte_pd;
+        }
+        else if (seleccion_pd == 1)
+        {
+            estado_actual3 = estadosit1_3::muerte_pd;
+        }
+        else if (seleccion_pd == 2)
+        {
+            estado_actual3 = estadosit1_3::muerte_pd;
+        }
+        
+        screen_pd.ExitLoopClosure()();
+    };
+
+    auto menu_pd = Menu(&opcines_pd, &seleccion_pd, menu_options_pd);
+
+    auto renderer_pd = Renderer(menu_pd, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_pd->Render() | center | border,
+            descripcion_pd,
+             }) | flex | border, 
+        });
+    });
+    screen_pd.Loop(renderer_pd);
+    }
+
+    /* ****************************************************************************************************************************************************************************** 
+    ramificacion de muerte de ouerta de hierro *********************************************************************************************************************************** */
+
+    if (estado_actual3 == estadosit1_3::muerte_pd)
+    {
+    
+    auto screen_pd = ScreenInteractive::Fullscreen();
+
+    auto descripcion_pd = hbox({
+        paragraph("inicia la pelea el duende es rapido con su daga lo buen es que haces buen parry a sus ataques pero derrepente el duende cansado retrosede y saca otra daga y te ataca mas rapido que antes haste que en una de esas te acierta su daga en tu pecho y aunque inteste quitartela el dolor te entumese y te clava su otra daga en tu clavicula y mueres")
+    });
+   
+    std::vector<std::string> opcines_pd = {
+        "Salir",
+    };
+    int seleccion_pd = 0;
+    MenuOption menu_options_pd;
+    menu_options_pd.on_enter = [&] {
+        if (seleccion_pd == 0)
+        {
+            estado_actual3 = estadosit1_3::salir;
+        }
+        screen_pd.ExitLoopClosure()();
+    };
+
+    auto menu_pd = Menu(&opcines_pd, &seleccion_pd, menu_options_pd);
+
+    auto renderer_pd = Renderer(menu_pd, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_pd->Render() | center | border,
+            descripcion_pd,
+             }) | flex | border, 
+        });
+    });
+    screen_pd.Loop(renderer_pd);
+    }
+    
 
  return true;   
 }
