@@ -11,7 +11,7 @@ using namespace ftxui;
  inline auto cabesera1 = hbox({
         text("Version: " + num_vercion) | flex,
         text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
+        text("nivel 1: Vestibulo oscuro") | flex,  
     })  |border;
 
  inline auto cabesera2 = hbox({

@@ -56,12 +56,6 @@ bool sit1_2(){
     //Inicio de la situacion 2 ***********************************************************************************************************************
    auto screen2 = ScreenInteractive::Fullscreen();
 
-    auto cabesera2 = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
-
     auto descripcion2 = hbox({
         paragraph("Entras con valentia y miedo al vestibulo oscuro de la mazmorra recordando la razon por la que estas aqui de todas formas no hay vuelta atras, al entrar ves un guardia de la mazmorra un pasillo seguro y otro que parece tener trampas, que vas hacer?."),
     }) | flex | border;
@@ -96,7 +90,7 @@ bool sit1_2(){
 
     auto renderer2 = Renderer(menu2, [&]() {
         return vbox({
-            cabesera2,
+            cabesera1,
            hbox({ menu2->Render() | center | border,
             descripcion2,
              }) | flex | border, 
