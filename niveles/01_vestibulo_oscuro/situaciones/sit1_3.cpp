@@ -46,7 +46,7 @@ bool sit1_3(){
 
     auto descripcion3 = hbox({
         paragraph("Pasaste por el pasillo con trampas, extrañamente se sentia seguro de atravesar, te encuentras en un sala amplia de ladrillos viejos y rotos parece una  zona segura de momento, que vas a hacer?")
-    });
+    }) | flex | border;
 
     estadosit1_3 estado_actual3 = estadosit1_3::vivo;
    
@@ -82,7 +82,7 @@ bool sit1_3(){
 
     auto descripcion_e = hbox({
         paragraph("exploras la sala, es bastante grande se ven muchas estatuas antiguas y de dioses, parece que esto no siempre fue una mazmorra, puede que haya sido un templo o castillo para algo grande, pero hay que tomar algun camino para seguir avansando por la mazmorra, encuentras varios caminos, cual recorres")
-    });
+    }) | flex | border;
    
     std::vector<std::string> opcines_e = {
         "Ir por la puerta grande de hierro",
@@ -149,7 +149,7 @@ bool sit1_3(){
 
     auto descripcion_ph = hbox({
         paragraph("pasas por la puerta de hierro es bastante grande y hay un pasillo y lo recorres sientes peligro cerca poco despues aparecen monstruos de mazmorra hay un duende una bruja y una araña discutiemdo quien te va a maatar ya que los 3 te consideran muy debil incluso 1vs1, que vas a hacer?")
-    });
+    }) | flex | border;
    
     std::vector<std::string> opcines_ph = {
         "Pelear con el duende",
@@ -191,14 +191,14 @@ bool sit1_3(){
     /* ******************************************************************************************************************************************************************* 
     ramicacion en caso de pelear con el duende ****************************************************************************************************************************************************** */
     
-    if (estado_actual3 == estadosit1_3::pelear_d;)
+    if (estado_actual3 == estadosit1_3::pelear_d)
     {
     
     auto screen_pd = ScreenInteractive::Fullscreen();
 
     auto descripcion_pd = hbox({
         paragraph("dices con voz alta voy a pelear con el duende se siente imponencia en la atmosfera, el duende da un paso adelante saca su daga y sonrie de forma espantosa, los demas monstruos se van a otra parte, que vas hacer")
-    });
+    }) | flex | border;
    
     std::vector<std::string> opcines_pd = {
         "permancer con tu espada y escudo al frente",
@@ -238,43 +238,224 @@ bool sit1_3(){
     }
 
     /* ****************************************************************************************************************************************************************************** 
-    ramificacion de muerte de ouerta de hierro *********************************************************************************************************************************** */
+    ramificacion de muerte al pelear con el duende*********************************************************************************************************************************** */
 
     if (estado_actual3 == estadosit1_3::muerte_pd)
     {
     
-    auto screen_pd = ScreenInteractive::Fullscreen();
+    auto screen_mpd = ScreenInteractive::Fullscreen();
 
-    auto descripcion_pd = hbox({
+    auto descripcion_mpd = hbox({
         paragraph("inicia la pelea el duende es rapido con su daga lo buen es que haces buen parry a sus ataques pero derrepente el duende cansado retrosede y saca otra daga y te ataca mas rapido que antes haste que en una de esas te acierta su daga en tu pecho y aunque inteste quitartela el dolor te entumese y te clava su otra daga en tu clavicula y mueres")
-    });
+    }) | flex | border;
    
-    std::vector<std::string> opcines_pd = {
+    std::vector<std::string> opcines_mpd = {
         "Salir",
     };
-    int seleccion_pd = 0;
-    MenuOption menu_options_pd;
-    menu_options_pd.on_enter = [&] {
-        if (seleccion_pd == 0)
+    int seleccion_mpd = 0;
+    MenuOption menu_options_mpd;
+    menu_options_mpd.on_enter = [&] {
+        if (seleccion_mpd == 0)
         {
             estado_actual3 = estadosit1_3::salir;
         }
-        screen_pd.ExitLoopClosure()();
+        screen_mpd.ExitLoopClosure()();
     };
 
-    auto menu_pd = Menu(&opcines_pd, &seleccion_pd, menu_options_pd);
+    auto menu_mpd = Menu(&opcines_mpd, &seleccion_mpd, menu_options_mpd);
 
-    auto renderer_pd = Renderer(menu_pd, [&]() {
+    auto renderer_mpd = Renderer(menu_mpd, [&]() {
         return vbox({
             cabesera1,
-           hbox({ menu_pd->Render() | center | border,
-            descripcion_pd,
+           hbox({ menu_mpd->Render() | center | border,
+            descripcion_mpd,
              }) | flex | border, 
         });
     });
-    screen_pd.Loop(renderer_pd);
+    screen_mpd.Loop(renderer_mpd);
+    if(estado_actual3 == estadosit1_3::salir)return 0;
     }
-    
+
+    /* ********************************************************************************************************************************************
+    Ramificaion al pelear con la bruja******************************************************************************************************************************** */
+
+    if (estado_actual3 == estadosit1_3::pelear_b)
+    {
+    auto screen_pb = ScreenInteractive::Fullscreen();
+
+    auto descripcion_pb = hbox({
+        paragraph("dices con voz alta voy a pelear con la bruja se siente imponencia en la atmosfera, la bruja da un paso adelante saca una pocima extraña, los demas monstruos se van a otra parte, que vas hacer")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_pb = {
+        "permancer con tu espada y escudo al frente",
+        "solo atacar a la bruja",
+        "defenderte hasta poder realizar un contraataque ",
+    };
+    int seleccion_pb = 0;
+    MenuOption menu_options_pb;
+    menu_options_pb.on_enter = [&] {
+        if (seleccion_pb == 0)
+        {
+            estado_actual3 = estadosit1_3::muerte_pb;
+        }
+        else if (seleccion_pb == 1)
+        {
+            estado_actual3 = estadosit1_3::muerte_pb;
+        }
+        else if (seleccion_pb == 2)
+        {
+            estado_actual3 = estadosit1_3::muerte_pb;
+        }
+        
+        screen_pb.ExitLoopClosure()();
+    };
+
+    auto menu_pb = Menu(&opcines_pb, &seleccion_pb, menu_options_pb);
+
+    auto renderer_pb = Renderer(menu_pb, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_pb->Render() | center | border,
+            descripcion_pb,
+             }) | flex | border, 
+        });
+    });
+    screen_pb.Loop(renderer_pb);
+    }
+
+    /* ***************************************************************************************************************************************************************
+    ramificacion muerte al pelear con bruja ************************************************************************************************************************** */
+
+    if(estado_actual3 == estadosit1_3::muerte_pb)
+    {
+    auto screen_mpb = ScreenInteractive::Fullscreen();
+
+    auto descripcion_mpb = hbox({
+        paragraph("inicia la pelea, la bruja te lanza pociones sin parar algunas de acido otras de daño, logras evadir muchas, pero la bruja toma mucha distancia repentinamente y lanza un frasco distinto, es un gas lacrimojeno te deja muy segado y no ves nada en eso, siente que algo que te impacta en la cabesa y se rompe es acido cayecdo sobre ti y mueres.")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_mpb = {
+        "Salir",
+    };
+    int seleccion_mpb = 0;
+    MenuOption menu_options_mpb;
+    menu_options_mpb.on_enter = [&] {
+        if (seleccion_mpb == 0)
+        {
+            estado_actual3 = estadosit1_3::salir;
+        }
+        screen_mpb.ExitLoopClosure()();
+    };
+
+    auto menu_mpb = Menu(&opcines_mpb, &seleccion_mpb, menu_options_mpb);
+
+    auto renderer_mpb = Renderer(menu_mpb, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_mpb->Render() | center | border,
+            descripcion_mpb,
+             }) | flex | border, 
+        });
+    });
+    screen_mpb.Loop(renderer_mpb);
+    if(estado_actual3 == estadosit1_3::salir)return 0;
+    }
+
+    /* **************************************************************************************************************************************************************** 
+    ramificacion de pelea con araña************************************************************************************************************************************ */
+
+    if (estado_actual3 == estadosit1_3::pelear_a)
+    {
+    auto screen_pa = ScreenInteractive::Fullscreen();
+
+    auto descripcion_pa = hbox({
+        paragraph("dices con voz alta voy a pelear con la araña se siente imponencia en la atmosfera, la araña da un paso adelante ase un sonido intimidante, los demas monstruos se van a otra parte, que vas hacer")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_pa = {
+        "permancer con tu espada y escudo al frente",
+        "solo atacar a la araña",
+        "defenderte hasta poder realizar un contraataque ",
+    };
+    int seleccion_pa = 0;
+    MenuOption menu_options_pa;
+    menu_options_pa.on_enter = [&] {
+        if (seleccion_pa == 0)
+        {
+            estado_actual3 = estadosit1_3::muerte_pa;
+        }
+        else if (seleccion_pa == 1)
+        {
+            estado_actual3 = estadosit1_3::muerte_pa;
+        }
+        else if (seleccion_pa == 2)
+        {
+            estado_actual3 = estadosit1_3::muerte_pa;
+        }
+        
+        screen_pa.ExitLoopClosure()();
+    };
+
+    auto menu_pa = Menu(&opcines_pa, &seleccion_pa, menu_options_pa);
+
+    auto renderer_pa = Renderer(menu_pa, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_pa->Render() | center | border,
+            descripcion_pa,
+             }) | flex | border, 
+        });
+    });
+    screen_pa.Loop(renderer_pa);
+    }
+
+    /* ************************************************************************************************************************************************************** 
+    ramificacion muerte al pelear con araña ************************************************************************************************************************* */
+
+    if(estado_actual3 == estadosit1_3::muerte_pa)
+    {
+    auto screen_mpa = ScreenInteractive::Fullscreen();
+
+    auto descripcion_mpa = hbox({
+        paragraph("inicia la pelea, la araña enviste de frente, usas tu escudo y la hases retroceder te ruge de forma intimidadte y vuelve a embestir con mas fuerza que la anterior despues la araña sube por las paredes hasta el techo te enviste fuertemente y aunque logras poner tu escudo se rompe y la araña te tiene en el piso hasta que te muerde la cara y mueres.")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_mpa = {
+        "Salir",
+    };
+    int seleccion_mpa = 0;
+    MenuOption menu_options_mpa;
+    menu_options_mpa.on_enter = [&] {
+        if (seleccion_mpa == 0)
+        {
+            estado_actual3 = estadosit1_3::salir;
+        }
+        screen_mpa.ExitLoopClosure()();
+    };
+
+    auto menu_mpa = Menu(&opcines_mpa, &seleccion_mpa, menu_options_mpa);
+
+    auto renderer_mpa = Renderer(menu_mpa, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_mpa->Render() | center | border,
+            descripcion_mpa,
+             }) | flex | border, 
+        });
+    });
+    screen_mpa.Loop(renderer_mpa);
+    }
+
+
+
+
+
+
+
+    /* ****************************************************************************************************************************************************************************** 
+    *********************************************************************************************************************************************************************************
+    empiensa las ramificaciones de pasillo izq ************************************************************************************************************************************** */
 
  return true;   
 }
