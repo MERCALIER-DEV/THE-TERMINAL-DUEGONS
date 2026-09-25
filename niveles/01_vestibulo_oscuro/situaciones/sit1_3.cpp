@@ -33,7 +33,10 @@ enum class estadosit1_3{
     muerte_pb,
     muerte_pa,
 
+    //ramificaciones de puerta_der
 
+    devolverse,
+    seguir,
 
     salir,
 };
@@ -101,22 +104,22 @@ bool sit1_3(){
             estado_actual3 = estadosit1_3::puerta_hierro;
         }
 
-        else if (seleccion_e = 1)
+        else if (seleccion_e == 1)
         {
             estado_actual3 = estadosit1_3::pasillo_izq;
         }
         
-         else if (seleccion_e = 2)
+         else if (seleccion_e == 2)
         {
             estado_actual3 = estadosit1_3::pasillo_der;
         }
 
-         else if (seleccion_e = 3)
+         else if (seleccion_e == 3)
         {
             estado_actual3 = estadosit1_3::puerta_der;
         }
 
-         else if (seleccion_e = 4)
+         else if (seleccion_e == 4)
         {
             estado_actual3 = estadosit1_3::vivo;
         }
@@ -137,7 +140,7 @@ bool sit1_3(){
     screen_e.Loop(renderer_e);
     }
 
-    if(estado_actual3 == estadosit1_3::vivo) return true;
+   // if(estado_actual3 == estadosit1_3::vivo) return true;
 
     /*****************************************************************************************************************************************************************
     *****************************************************************************************************************************************************************
@@ -449,10 +452,50 @@ bool sit1_3(){
 
     /* ****************************************************************************************************************************************************************************** 
     *********************************************************************************************************************************************************************************
-    empiensa las ramificaciones de pasillo izq ************************************************************************************************************************************** */
+    empiensa las ramificaciones de pasillo der ************************************************************************************************************************************** */
 
+    if(estado_actual3 == estadosit1_3::pasillo_der)
+    {
+    auto screen_p_der = ScreenInteractive::Fullscreen();
+
+    auto descripcion_p_der = hbox({
+        paragraph("Recorres el pasillo derecho, es amplio y largo, encuentras otra sala amplia, que vas a hacer? ")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_p_der = {
+        "Devolverte por el pasillo",
+        "Seguir por el mismo",
+    };
+    int seleccion_p_der = 0;
+    MenuOption menu_options_p_der;
+    menu_options_p_der.on_enter = [&] {
+
+         if (seleccion_p_der == 0)
+        {
+            estado_actual3 = estadosit1_3::devolverse;
+        }
+        else if (seleccion_p_der == 1)
+        {
+            estado_actual3 = estadosit1_3::seguir;
+        }
+
+        screen_p_der.ExitLoopClosure()();
+    };
+
+    auto menu_p_der = Menu(&opcines_p_der, &seleccion_p_der, menu_options_p_der);
+
+    auto renderer_p_der = Renderer(menu_p_der, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_p_der->Render() | center | border,
+            descripcion_p_der,
+             }) | flex | border, 
+        });
+    });
+    screen_p_der.Loop(renderer_p_der);
+    }
 
 
     
- return true;   
+ return false;   
 }

@@ -106,12 +106,6 @@ bool sit1_2(){
 
         auto screen_pelio = ScreenInteractive::Fullscreen();
 
-    auto cabesera_pelio = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
-
     auto descripcion_pelio = hbox({
         paragraph("Te acercas al guardia para peliar con el, estando mas cerca ves que tiene una alabarda y una exelente armadura, el mismo se percata de tu presencia y apunta su arma hacia a ti, Que vas hacer?. "),
     }) | flex | border;
@@ -142,7 +136,7 @@ bool sit1_2(){
 
     auto renderer_pelio = Renderer(menu_pelio, [&]() {
         return vbox({
-            cabesera_pelio,
+            cabesera1,
            hbox({ menu_pelio->Render() | center | border,
             descripcion_pelio,
              }) | flex | border, 
@@ -156,12 +150,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::contrataque){
 
             auto screen_c = ScreenInteractive::Fullscreen();
-
-    auto cabesera_c = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_c = hbox({
         paragraph("Estas a punto de contraatacar, como lo vas a hacer?"),
@@ -190,7 +178,7 @@ bool sit1_2(){
 
     auto renderer_c = Renderer(menu_c, [&]() {
         return vbox({
-            cabesera_c,
+            cabesera1,
            hbox({ menu_c->Render() | center | border,
             descripcion_c,
              }) | flex | border, 
@@ -203,12 +191,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::muerte_c){
 
     auto screen_mc = ScreenInteractive::Fullscreen();
-
-    auto cabesera_mc = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_mc = hbox({
         paragraph("A pesar de tu feroz contraataque, el guardia resulto muy poco herido y te clava su alabarda en tu cabeza y mueres."),
@@ -232,7 +214,7 @@ bool sit1_2(){
 
     auto renderer_mc = Renderer(menu_mc, [&]() {
         return vbox({
-            cabesera_mc,
+            cabesera1,
            hbox({ menu_mc->Render() | center | border,
             descripcion_mc,
              }) | flex | border, 
@@ -247,12 +229,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::defensa){
 
         auto screen_defensa = ScreenInteractive::Fullscreen();
-
-    auto cabesera_defensa = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_defensa = hbox({
         paragraph("Estas a punto de defenderte, como lo vas a hacer?"),
@@ -280,7 +256,7 @@ bool sit1_2(){
 
     auto renderer_defensa = Renderer(menu_defensa, [&]() {
         return vbox({
-            cabesera_defensa,
+            cabesera1,
            hbox({ menu_defensa->Render() | center | border,
             descripcion_defensa,
              }) | flex | border, 
@@ -293,12 +269,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::muerte_d){
 
         auto screen_md = ScreenInteractive::Fullscreen();
-
-    auto cabesera_md = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_md = hbox({
         paragraph("A pesar de tu defensa, el guardia atraveso tu escudo con su alabarda y te clava en el pecho y mueres."),
@@ -322,7 +292,7 @@ bool sit1_2(){
 
     auto renderer_md = Renderer(menu_md, [&]() {
         return vbox({
-            cabesera_md,
+            cabesera1,
            hbox({ menu_md->Render() | center | border,
             descripcion_md,
              }) | flex | border, 
@@ -336,12 +306,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::muerte_d1){
 
         auto screen_md1 = ScreenInteractive::Fullscreen();
-
-    auto cabesera_md1 = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_md1 = hbox({
         paragraph("A pesar de estar a distancia, el guardia lanza su alabarda y te atraviesa el pecho y mueres."),
@@ -366,7 +330,7 @@ bool sit1_2(){
 
     auto renderer_md1 = Renderer(menu_md1, [&]() {
         return vbox({
-            cabesera_md1,
+            cabesera1,
            hbox({ menu_md1->Render() | center | border,
             descripcion_md1,
              }) | flex | border, 
@@ -381,12 +345,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::rodilla){
 
         auto screen_rodilla = ScreenInteractive::Fullscreen();
-
-    auto cabesera_rodilla = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_rodilla = hbox({
         paragraph("Estas a punto de atacar su rodilla, como lo vas a hacer?"),
@@ -415,7 +373,7 @@ bool sit1_2(){
 
     auto renderer_rodilla = Renderer(menu_rodilla, [&]() {
         return vbox({
-            cabesera_rodilla,
+            cabesera1,
            hbox({ menu_rodilla->Render() | center | border,
             descripcion_rodilla,
              }) | flex | border, 
@@ -429,27 +387,19 @@ bool sit1_2(){
 
         auto screen_mr = ScreenInteractive::Fullscreen();
 
-    auto cabesera_mr = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
-
     auto descripcion_mr = hbox({
-        paragraph("Te acercas al guardia para peliar con el, estando mas cerca ves que tiene una alabarda y una exelente armadura, el mismo se percata de tu presencia y apunta su arma hacia a ti, Que vas hacer?. "),
+        paragraph("estas a punto de atacar su rodilla, pero el guardia ataca mas rapido que tu y mueres"),
     }) | flex | border;
    
     std::vector<std::string> opcines_mr = {
-        "hacer un contrataque despues de bloquear su alabarda",
-        "mantener una postura defensiva",
-        "atacar una fraja de su rodilla que la armadura no alcansa a cubrir",
+        "Salir",
     };
     int seleccion_mr = 0;
 
     MenuOption menu_options_mr;
     menu_options_mr.on_enter = [&] {
         if (seleccion_mr == 0) {
-            estado_actual2 = estadosit1_2::contrataque;
+            estado_actual2 = estadosit1_2::salir;
      
         } 
         screen_mr.ExitLoopClosure()();
@@ -459,7 +409,7 @@ bool sit1_2(){
 
     auto renderer_mr = Renderer(menu_mr, [&]() {
         return vbox({
-            cabesera_mr,
+            cabesera1,
            hbox({ menu_mr->Render() | center | border,
             descripcion_mr,
              }) | flex | border, 
@@ -475,12 +425,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::pasillo_seguro){
 
         auto screen_ps = ScreenInteractive::Fullscreen();
-
-    auto cabesera_ps = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_ps = hbox({
         paragraph("decides ir con sigilo por el pasillo seguro, ha pasado un rato, precientes peligro con tu instinto, que vas a hacer?"),
@@ -512,7 +456,7 @@ bool sit1_2(){
 
     auto renderer_ps = Renderer(menu_ps, [&]() {
         return vbox({
-            cabesera_ps,
+            cabesera1,
            hbox({ menu_ps->Render() | center | border,
             descripcion_ps,
              }) | flex | border, 
@@ -527,12 +471,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::caminando){
 
         auto screen_c = ScreenInteractive::Fullscreen();
-
-    auto cabesera_c = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_c = hbox({
         paragraph("sigues caminando por el pasillo, tu instito te sigue diciendo que hay peligro y es mas fuerte que antes, que vas hacer?"),
@@ -560,7 +498,7 @@ bool sit1_2(){
 
     auto renderer_c = Renderer(menu_c, [&]() {
         return vbox({
-            cabesera_c,
+            cabesera1,
            hbox({ menu_c->Render() | center | border,
             descripcion_c,
              }) | flex | border, 
@@ -573,12 +511,6 @@ bool sit1_2(){
      if(estado_actual2 == estadosit1_2::muerte_ca){
 
         auto screen_mca = ScreenInteractive::Fullscreen();
-
-    auto cabesera_mca = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_mca = hbox({
         paragraph("despues de seguir caminando un rato mas resulta que pisas una trampa que dispara un dardo venenoso y te impacta en el pecho mueriendo.")
@@ -602,7 +534,7 @@ bool sit1_2(){
 
     auto renderer_mca = Renderer(menu_mca, [&]() {
         return vbox({
-            cabesera_mca,
+            cabesera1,
            hbox({ menu_mca->Render() | center | border,
             descripcion_mca,
              }) | flex | border, 
@@ -616,12 +548,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::observar_bien){
 
         auto screen_ob = ScreenInteractive::Fullscreen();
-
-    auto cabesera_ob = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_ob = hbox({
         paragraph("Caminas viendo al piso de forma detallada en busca de trampas para evitarlas, que vas a hacer?")
@@ -647,7 +573,7 @@ bool sit1_2(){
 
     auto renderer_ob = Renderer(menu_ob, [&]() {
         return vbox({
-            cabesera_ob,
+            cabesera1,
            hbox({ menu_ob->Render() | center | border,
             descripcion_ob,
              }) | flex | border, 
@@ -660,12 +586,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::muerte_ob){
 
         auto screen_mob = ScreenInteractive::Fullscreen();
-
-    auto cabesera_mob = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_mob = hbox({
         paragraph("Caminas un rato mas, a pesar de observar bien el piso pisas una placa de precion que dispara un dardo venenoso y mueres")
@@ -689,7 +609,7 @@ bool sit1_2(){
 
     auto renderer_mob = Renderer(menu_mob, [&]() {
         return vbox({
-            cabesera_mob,
+            cabesera1,
            hbox({ menu_mob->Render() | center | border,
             descripcion_mob,
              }) | flex | border, 
@@ -703,12 +623,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::devolver){
 
         auto screen_de = ScreenInteractive::Fullscreen();
-
-    auto cabesera_de = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_de = hbox({
         paragraph("Desides devolverte por el mismo pasillo, derrepente te encuentras con el mismi guardia de hace rato y esta en posicion de ataque, que vas ha hacer?")
@@ -739,7 +653,7 @@ bool sit1_2(){
 
     auto renderer_de = Renderer(menu_de, [&]() {
         return vbox({
-            cabesera_de,
+            cabesera1,
            hbox({ menu_de->Render() | center | border,
             descripcion_de,
              }) | flex | border, 
@@ -752,12 +666,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::muerte_de){
 
         auto screen_mde = ScreenInteractive::Fullscreen();
-
-    auto cabesera_mde = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_mde = hbox({
         paragraph("El guardia recciona demacido rapido antes de que puedas hacer algo por salvarte y mueres")
@@ -780,7 +688,7 @@ bool sit1_2(){
 
     auto renderer_mde = Renderer(menu_mde, [&]() {
         return vbox({
-            cabesera_mde,
+            cabesera1,
            hbox({ menu_mde->Render() | center | border,
             descripcion_mde,
              }) | flex | border, 
@@ -795,12 +703,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::saludo){
 
         auto screen_s = ScreenInteractive::Fullscreen();
-
-    auto cabesera_s = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_s = hbox({
         paragraph("Saludas al guardia, el mismo entra en alerta y corre con su alabarda apuntandote hacia tu pocion, que vas a hacer?") 
@@ -827,7 +729,7 @@ bool sit1_2(){
 
     auto renderer_s = Renderer(menu_s, [&]() {
         return vbox({
-            cabesera_s,
+            cabesera1,
            hbox({ menu_s->Render() | center | border,
             descripcion_s,
              }) | flex | border, 
@@ -841,12 +743,6 @@ bool sit1_2(){
     if(estado_actual2 == estadosit1_2::muerte_s){
 
         auto screen_ms = ScreenInteractive::Fullscreen();
-
-    auto cabesera_ms = hbox({
-        text("Version: " + num_vercion) | flex,
-        text("THE TERMINAL DUEGONS") | flex,
-        text("nivel 1: El vestibulo oscuro") | flex,  
-    })  |border;
 
     auto descripcion_ms = hbox({
         paragraph("El guardia reacciona mas rapido antes de que hagas algo y te clava su alabarda en tu pecho y mueres (de verdad hay que ser muy pendejo para saludar a un tipo peligroso en un sitio peligroso)") 
@@ -870,7 +766,7 @@ bool sit1_2(){
 
     auto renderer_ms = Renderer(menu_ms, [&]() {
         return vbox({
-            cabesera_ms,
+            cabesera1,
            hbox({ menu_ms->Render() | center | border,
             descripcion_ms,
              }) | flex | border, 

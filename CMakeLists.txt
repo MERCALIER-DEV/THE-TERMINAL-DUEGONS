@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(THE_TERMINAL_DUEGONS CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 1. Descargar FTXUI desde GitHub
