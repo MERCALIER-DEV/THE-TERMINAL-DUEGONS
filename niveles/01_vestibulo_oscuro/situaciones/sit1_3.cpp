@@ -580,17 +580,56 @@ bool sit1_3(){
     });
     screen_h.Loop(renderer_h);
     if (estado_actual3 == estadosit1_3::salir)return false;
-    
     }
+
     /* *************************************************************************************************************************************
     ramificacion muerte en caso de atacar al duende **************************************************************************************** */
 
-     if(estado_actual3 == estadosit1_3::atk_duende)
+    if(estado_actual3 == estadosit1_3::atk_duende)
+    {
+    auto screen_atk_duende = ScreenInteractive::Fullscreen();
+
+    auto descripcion_atk_duende = hbox({
+        paragraph("decides atacar al duende, pero resulto ser que el duende es mas agil que tu y pesar de que bloqueas varios de sus ataques encuentra un punto debil y te clava su daga ahi y mueres. (y el duede se rie de ti)")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_atk_duende = {
+        "Salir",
+       
+    };
+    int seleccion_atk_duende = 0;
+    MenuOption menu_options_atk_duende;
+    menu_options_atk_duende.on_enter = [&] {
+
+         if (seleccion_atk_duende == 0)
+        {
+            estado_actual3 = estadosit1_3::salir;
+        }
+
+        screen_atk_duende.ExitLoopClosure()();
+    };
+
+    auto menu_atk_duende = Menu(&opcines_atk_duende, &seleccion_atk_duende, menu_options_atk_duende);
+
+    auto renderer_atk_duende = Renderer(menu_atk_duende, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_atk_duende->Render() | center | border,
+            descripcion_atk_duende,
+             }) | flex | border, 
+        });
+    });
+    screen_atk_duende.Loop(renderer_atk_duende);
+    if (estado_actual3 == estadosit1_3::salir)return false;
+    }
+    /* *********************************************************************************************************************************** 
+    ramificacion muerte de pasillo derecho en caso de seguir ***************************************************************************** */
+     if(estado_actual3 == estadosit1_3::seguir)
     {
     auto screen_p_der = ScreenInteractive::Fullscreen();
 
     auto descripcion_p_der = hbox({
-        paragraph("decides huir, el duende te persigue pero al entrar en la sala amplia pisas una trampa de avalancha y mueres (y el duede se rie de ti)")
+        paragraph("decides seguir por esa sala, pero al entrar en la sala amplia pisas una trampa de avalancha y mueres. ")
     }) | flex | border;
    
     std::vector<std::string> opcines_p_der = {
@@ -621,9 +660,7 @@ bool sit1_3(){
     });
     screen_p_der.Loop(renderer_p_der);
     if (estado_actual3 == estadosit1_3::salir)return false;
-    
     }
-
 
     
  return false;   

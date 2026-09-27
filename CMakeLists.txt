@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 1. Descargar FTXUI desde GitHub
+
 include(FetchContent)
 FetchContent_Declare(
     ftxui
