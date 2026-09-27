@@ -33,10 +33,17 @@ enum class estadosit1_3{
     muerte_pb,
     muerte_pa,
 
-    //ramificaciones de puerta_der
+    //ramificaciones de pasillo_der
 
     devolverse,
     seguir,
+
+    // ramificasiones de muerte de pasillo_der
+
+    huir,
+    atk_duende,
+
+
 
     salir,
 };
@@ -493,6 +500,128 @@ bool sit1_3(){
         });
     });
     screen_p_der.Loop(renderer_p_der);
+    }
+    /* ****************************************************************************************************************************************** 
+    ramificacion de pasillo derecho devolverse ************************************************************************************************** */
+    if(estado_actual3 == estadosit1_3::devolverse)
+    {
+    auto screen_devo = ScreenInteractive::Fullscreen();
+
+    auto descripcion_devo = hbox({
+        paragraph("decides de volverte, te encuentras con un duende que quiere matarte que vas a hacer? ")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_devo = {
+        "huir",
+        "atacarlo",
+    };
+    int seleccion_devo = 0;
+    MenuOption menu_options_devo;
+    menu_options_devo.on_enter = [&] {
+
+         if (seleccion_devo == 0)
+        {
+            estado_actual3 = estadosit1_3::huir;
+        }
+        else if (seleccion_devo == 1)
+        {
+            estado_actual3 = estadosit1_3::atk_duende;
+        }
+
+        screen_devo.ExitLoopClosure()();
+    };
+
+    auto menu_devo = Menu(&opcines_devo, &seleccion_devo, menu_options_devo);
+
+    auto renderer_devo = Renderer(menu_devo, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_devo->Render() | center | border,
+            descripcion_devo,
+             }) | flex | border, 
+        });
+    });
+    screen_devo.Loop(renderer_devo);
+    }
+    /* ******************************************************************************************************************************
+    ramificacion muerte pasillo derecho al huir ************************************************************************************* */
+    if(estado_actual3 == estadosit1_3::huir)
+    {
+    auto screen_h = ScreenInteractive::Fullscreen();
+
+    auto descripcion_h = hbox({
+        paragraph("decides huir, el duende te persigue pero al entrar en la sala amplia pisas una trampa de avalancha y mueres (y el duede se rie de ti)")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_h = {
+        "Salir", 
+    };
+    int seleccion_h = 0;
+    MenuOption menu_options_h;
+    menu_options_h.on_enter = [&] {
+
+         if (seleccion_h == 0)
+        {
+            estado_actual3 = estadosit1_3::salir;
+        }
+
+        screen_h.ExitLoopClosure()();
+    };
+
+    auto menu_h = Menu(&opcines_h, &seleccion_h, menu_options_h);
+
+    auto renderer_h = Renderer(menu_h, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_h->Render() | center | border,
+            descripcion_h,
+             }) | flex | border, 
+        });
+    });
+    screen_h.Loop(renderer_h);
+    if (estado_actual3 == estadosit1_3::salir)return false;
+    
+    }
+    /* *************************************************************************************************************************************
+    ramificacion muerte en caso de atacar al duende **************************************************************************************** */
+
+     if(estado_actual3 == estadosit1_3::atk_duende)
+    {
+    auto screen_p_der = ScreenInteractive::Fullscreen();
+
+    auto descripcion_p_der = hbox({
+        paragraph("decides huir, el duende te persigue pero al entrar en la sala amplia pisas una trampa de avalancha y mueres (y el duede se rie de ti)")
+    }) | flex | border;
+   
+    std::vector<std::string> opcines_p_der = {
+        "Salir",
+       
+    };
+    int seleccion_p_der = 0;
+    MenuOption menu_options_p_der;
+    menu_options_p_der.on_enter = [&] {
+
+         if (seleccion_p_der == 0)
+        {
+            estado_actual3 = estadosit1_3::salir;
+        }
+
+        screen_p_der.ExitLoopClosure()();
+    };
+
+    auto menu_p_der = Menu(&opcines_p_der, &seleccion_p_der, menu_options_p_der);
+
+    auto renderer_p_der = Renderer(menu_p_der, [&]() {
+        return vbox({
+            cabesera1,
+           hbox({ menu_p_der->Render() | center | border,
+            descripcion_p_der,
+             }) | flex | border, 
+        });
+    });
+    screen_p_der.Loop(renderer_p_der);
+    if (estado_actual3 == estadosit1_3::salir)return false;
+    
     }
 
 
