@@ -41,6 +41,18 @@ enum class estadosit1_3{
     huir,
     atk_duende,
 
+    //ramificaciones de pasillo_izq
+
+    seguir_izq,
+    devolverse_izq,
+
+    // ramifiaciones de muerte de pasillo izquierdo
+
+    muerte_puerta_h_simple,
+    muerte_puerta_hueca,
+    muerte_puerta_cercana,
+    muerte_seguir,
+
     salir,
 };
 
@@ -355,7 +367,152 @@ bool sit1_3(){
 
     /* ********************************************************************************************************************************************
     ***********************************************************************************************************************************************
-    ramioficaciones de pasillo izquierdo *********************************************************************************************************** */
+    ramificaciones de pasillo izquierdo *********************************************************************************************************** */
     
+    if (estado_actual3 == estadosit1_3::pasillo_izq) {
+        auto screen_p_izq = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_p_izq = {
+            "seguir por el pasillo",
+            "devolverte",
+        };
+        int seleccion_p_izq = 0;
+
+        screen_p_izq.Loop(crear_dialogo(opcines_p_izq, seleccion_p_izq, {
+            paragraph("Recorres el pasillo izquierdo, no hay mucho que ver solo otro pasillo aun que este es particularmente largo. que vas a hacer?"),
+        }, [&] {
+            if (seleccion_p_izq == 0) {
+                estado_actual3 = estadosit1_3::seguir_izq;
+            } else if (seleccion_p_izq == 1) {
+                estado_actual3 = estadosit1_3::devolverse_izq;
+            }
+            screen_p_izq.ExitLoopClosure()();
+        }));
+    }
+
+    /* ***************************************************************************************************************************************
+    ramificaciones al seguir por pasillo_izq ************************************************************************************************* */
+
+    if (estado_actual3 == estadosit1_3::seguir_izq) {
+        auto screen_seg_izq = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_seg_izq = {
+            "Ir por la puerta de hierro simple",
+            "Ir por el hueco donde se ve el marco de una puerta",
+            "Ir por la puerta mas cercana a ti",
+            "seguir por mas por le pasillo"
+        };
+        int seleccion_seg_izq = 0;
+
+        screen_seg_izq.Loop(crear_dialogo(opcines_seg_izq, seleccion_seg_izq, {
+            paragraph("Recorres el pasillo izquierdo aun mas, encuentras varia puertas viejas y el pasillo todavia se extiende mas. que vas hacer?"),
+        }, [&] {
+            if (seleccion_seg_izq == 0) {
+                estado_actual3 = estadosit1_3::muerte_puerta_h_simple;
+            } else if (seleccion_seg_izq == 1) {
+                estado_actual3 = estadosit1_3::muerte_puerta_hueca;
+            }else if (seleccion_seg_izq == 2) {
+                estado_actual3 = estadosit1_3::muerte_puerta_cercana;
+            }else if (seleccion_seg_izq == 3) {
+                estado_actual3 = estadosit1_3::muerte_seguir;
+            }
+            screen_seg_izq.ExitLoopClosure()();
+        }));
+    }
+    
+    /* *************************************************************************************************************************************************
+    ramificaciones muerte de pasillo izquierdo ************************************************************************************** */
+
+    /* ***********************************************************************************************************************************************************
+    ramificacion en caso de puerta_h_simple ********************************************************************************************************************** */
+
+    if (estado_actual3 == estadosit1_3::muerte_puerta_h_simple) {
+        auto screenm_m_p_h_s = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcinesm_m_p_h_s = {"Salir",};
+        int seleccionm_m_p_h_s = 0;
+
+        screenm_m_p_h_s.Loop(crear_dialogo(opcinesm_m_p_h_s, seleccionm_m_p_h_s, {
+            paragraph("resulta que por esa puerta de hierro habia un mago de fuego que te lanzo una bola de fuego antes de que pudieras defenderte y mueres."),
+        }, [&] {
+            if (seleccionm_m_p_h_s == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screenm_m_p_h_s.ExitLoopClosure()();
+        }));
+    }
+
+    /* **************************************************************************************************************************************************************
+    ramificacion muerte en caso de puerta_hueca***************************************************************************************************************************************************************** */
+
+    if (estado_actual3 == estadosit1_3::muerte_puerta_hueca) {
+        auto screen_m_p_hu = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_m_p_hu = {"Salir",};
+        int seleccion_m_p_hu = 0;
+
+        screen_m_p_hu.Loop(crear_dialogo(opcines_m_p_hu, seleccion_m_p_hu, {
+            paragraph("resulta que por esa puerta hueca la puerta no era lo unico hueco sino tambien el piso caes por el mismo y mueres."),
+        }, [&] {
+            if (seleccion_m_p_hu == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_m_p_hu.ExitLoopClosure()();
+        }));
+    }
+
+    /* *********************************************************************************************************************************************
+    ramificacion muerte puerta cercana ************************************************************************************************************* */
+
+    if (estado_actual3 == estadosit1_3::muerte_puerta_cercana) {
+        auto screen_m_p_cer = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_m_p_cer = {"Salir",};
+        int seleccion_m_p_cer = 0;
+
+        screen_m_p_cer.Loop(crear_dialogo(opcines_m_p_cer, seleccion_m_p_cer, {
+            paragraph("resulta que por esa puerta cercana en realidad era un trampa conectada a un mecanismo de fuego que disparaba un rayo incinerador justo a tu espalda y mueres"),
+        }, [&] {
+            if (seleccion_m_p_cer == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_m_p_cer.ExitLoopClosure()();
+        }));
+    }
+
+    /* ******************************************************************************************************************************************************************************************
+    Muerte al seguir por el pasillo****************************************************************************************************************************************************************** */
+
+    if (estado_actual3 == estadosit1_3::muerte_seguir) {
+        auto screen_m_seg = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_m_seg = {"Salir",};
+        int seleccion_m_seg = 0;
+
+        screen_m_seg.Loop(crear_dialogo(opcines_m_seg, seleccion_m_seg, {
+            paragraph("Sigues mas adelante por ese pasillo ignorando las demas puertas, escuchas ruidos en el techo pero antes de poder hacer algo resulta que una araña te ataca por sopresa desde el techo y mueres"),
+        }, [&] {
+            if (seleccion_m_seg == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_m_seg.ExitLoopClosure()();
+        }));
+    }
+    /* ***************************************************************************************************************************************************************
+    muerte al devolter por el pasillo ******************************************************************************************************************************** */
+
+    if (estado_actual3 == estadosit1_3::muerte_seguir) {
+        auto screen_m_devo = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_m_devo = {"Salir",};
+        int seleccion_m_devo = 0;
+
+        screen_m_devo.Loop(crear_dialogo(opcines_m_devo, seleccion_m_devo, {
+            paragraph("desides devolverte del pasillo, escuchas ruidos en el techo pero antes de poder hacer algo resulta que una araña te ataca por sopresa desde el techo y mueres"),
+        }, [&] {
+            if (seleccion_m_devo == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_m_devo.ExitLoopClosure()();
+        }));
+    }
+
+    /* ***********************************************************************************************************************************************************
+    **************************************************************************************************************************************************************
+    ramificaciones de puerta comun de madera derecha************************************************************************************************************** */
+
     return false;
 }
