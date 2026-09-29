@@ -20,6 +20,7 @@ file(GLOB_RECURSE FUENTES_NIVEL "niveles/*.cpp")
 add_executable(THE_TERMINAL_DUEGONS
     src/Main.cpp
     ${FUENTES_NIVEL}
+    include/cajas_dialogo.h
 )
 
 # 3. Detectar e incluir automáticamente TODAS las subcarpetas que tengan archivos .h
