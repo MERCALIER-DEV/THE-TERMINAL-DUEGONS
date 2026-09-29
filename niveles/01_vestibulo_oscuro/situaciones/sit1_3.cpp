@@ -1,5 +1,8 @@
+﻿#include <functional>
 #include <iostream>
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/component/screen_interactive.hpp>
@@ -7,43 +10,36 @@
 #include <ftxui/component/component.hpp>
 #include "sit1_3.h"
 #include "cabesera.h"
+#include "cajas_dialogo.h"
 
 using namespace ftxui;
 
 enum class estadosit1_3{
     // estados normales o primarios (son las estdos que por si solos no definen el final del jigador y solo uno de ellos es el corrrecto al aplicar el estado vivo)
-
     vivo,
     exploro,
     puerta_hierro,
     pasillo_der,
     pasillo_izq,
     puerta_der,
-    // puerta_izq, este estado es vivo por que ese es el correcto
 
     // ramificaciones de puerta de hierro
-
     pelear_d,
     pelear_b,
     pelear_a,
 
     // ramificaines de muerte de puerta de hierro
-
     muerte_pd,
     muerte_pb,
     muerte_pa,
 
     //ramificaciones de pasillo_der
-
     devolverse,
     seguir,
 
     // ramificasiones de muerte de pasillo_der
-
     huir,
     atk_duende,
-
-
 
     salir,
 };
@@ -52,620 +48,314 @@ bool sit1_3(){
     /* ***********************************************************************************************************************************************************
     empiesa la sit1_3 ********************************************************************************************************************************************
     ************************************************************************************************************************************************************** */
-    auto screen3 = ScreenInteractive::Fullscreen();
+    auto crear_dialogo = [&](const std::vector<std::string>& opciones,
+                            int& seleccion,
+                            const Elements& contenido,
+                            std::function<void()> accion) {
+        auto caja = std::make_shared<cajas_dialogo>();
+        caja->textos = contenido;
+        auto menu = caja->menu_sit(opciones, seleccion, std::move(accion));
 
-    auto descripcion3 = hbox({
-        paragraph("Pasaste por el pasillo con trampas, extrañamente se sentia seguro de atravesar, te encuentras en un sala amplia de ladrillos viejos y rotos parece una  zona segura de momento, que vas a hacer?")
-    }) | flex | border;
-
-    estadosit1_3 estado_actual3 = estadosit1_3::vivo;
-   
-    std::vector<std::string> opcines3 = {
-        "Explorar la sala",
+        return Renderer(menu, [caja, menu]() {
+            return vbox({
+                cabesera1,
+                hbox({ menu->Render() | center | border, caja->texto_sit() }) | flex | border,
+            });
+        });
     };
+
+    auto screen3 = ScreenInteractive::Fullscreen();
+    estadosit1_3 estado_actual3 = estadosit1_3::vivo;
+
+    std::vector<std::string> opcines3 = { "Explorar la sala" };
     int seleccion3 = 0;
-    MenuOption menu_options3;
-    menu_options3.on_enter = [&] {
+
+    screen3.Loop(crear_dialogo(opcines3, seleccion3, {
+        paragraph("Pasaste por el pasillo con trampas, extrañamente se sentia seguro de atravesar, te encuentras en un sala amplia de ladrillos viejos y rotos parece una  zona segura de momento, que vas a hacer?"),
+    }, [&] {
         if (seleccion3 == 0) {
             estado_actual3 = estadosit1_3::exploro;
-        } 
+        }
         screen3.ExitLoopClosure()();
-    };
+    }));
 
-    auto menu3 = Menu(&opcines3, &seleccion3, menu_options3);
-
-    auto renderer3 = Renderer(menu3, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu3->Render() | center | border,
-            descripcion3,
-             }) | flex | border, 
-        });
-    });
-    screen3.Loop(renderer3);
     /* *******************************************************************************************************************************************
     ***********************************************************************************************************************************************
      deciones principales ************************************************************************************************************************ */
+    if (estado_actual3 == estadosit1_3::exploro) {
+        auto screen_e = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_e = {
+            "Ir por la puerta grande de hierro",
+            "ir por el pasillo que esta a tu izquierda",
+            "ir por el pasillo que esta a la derecha",
+            "ir por la puerta comun de madera de la derecha",
+            "ir por la puerta comun de madera de la izquierda",
+        };
+        int seleccion_e = 0;
 
-     if(estado_actual3 == estadosit1_3::exploro){
-     auto screen_e = ScreenInteractive::Fullscreen();
-
-    auto descripcion_e = hbox({
-        paragraph("exploras la sala, es bastante grande se ven muchas estatuas antiguas y de dioses, parece que esto no siempre fue una mazmorra, puede que haya sido un templo o castillo para algo grande, pero hay que tomar algun camino para seguir avansando por la mazmorra, encuentras varios caminos, cual recorres")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_e = {
-        "Ir por la puerta grande de hierro",
-        "ir por el pasillo que esta a tu izquierda",
-        "ir por el pasillo que esta a la derecha",
-        "ir por la puerta comun de madera de la derecha",
-        "ir por la puerta comun de madera de la izquierda",
-    };
-    int seleccion_e = 0;
-
-    MenuOption menu_options_e;
-    menu_options_e.on_enter = [&] {
-
-        if (seleccion_e == 0) 
-        {
-            estado_actual3 = estadosit1_3::puerta_hierro;
-        }
-
-        else if (seleccion_e == 1)
-        {
-            estado_actual3 = estadosit1_3::pasillo_izq;
-        }
-        
-         else if (seleccion_e == 2)
-        {
-            estado_actual3 = estadosit1_3::pasillo_der;
-        }
-
-         else if (seleccion_e == 3)
-        {
-            estado_actual3 = estadosit1_3::puerta_der;
-        }
-
-         else if (seleccion_e == 4)
-        {
-            estado_actual3 = estadosit1_3::vivo;
-        }
-
-        screen_e.ExitLoopClosure()();
-    };
-
-    auto menu_e = Menu(&opcines_e, &seleccion_e, menu_options_e);
-
-    auto renderer_e = Renderer(menu_e, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_e->Render() | center | border,
-            descripcion_e,
-             }) | flex | border, 
-        });
-    });
-    screen_e.Loop(renderer_e);
+        screen_e.Loop(crear_dialogo(opcines_e, seleccion_e, {
+            paragraph("exploras la sala, es bastante grande se ven muchas estatuas antiguas y de dioses, parece que esto no siempre fue una mazmorra, puede que haya sido un templo o castillo para algo grande, pero hay que tomar algun camino para seguir avansando por la mazmorra, encuentras varios caminos, cual recorres"),
+        }, [&] {
+            if (seleccion_e == 0) {
+                estado_actual3 = estadosit1_3::puerta_hierro;
+            } else if (seleccion_e == 1) {
+                estado_actual3 = estadosit1_3::pasillo_izq;
+            } else if (seleccion_e == 2) {
+                estado_actual3 = estadosit1_3::pasillo_der;
+            } else if (seleccion_e == 3) {
+                estado_actual3 = estadosit1_3::puerta_der;
+            } else if (seleccion_e == 4) {
+                estado_actual3 = estadosit1_3::vivo;
+            }
+            screen_e.ExitLoopClosure()();
+        }));
     }
-
-   // if(estado_actual3 == estadosit1_3::vivo) return true;
 
     /*****************************************************************************************************************************************************************
     *****************************************************************************************************************************************************************
     ramificaciones al pasar por la puerta de hierro ****************************************************************************************************************** */
-     if(estado_actual3 == estadosit1_3::puerta_hierro)
-     {
+    if (estado_actual3 == estadosit1_3::puerta_hierro) {
+        auto screen_ph = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_ph = {
+            "Pelear con el duende",
+            "Pelear con la bruja",
+            "Pelear con la araña",
+        };
+        int seleccion_ph = 0;
 
-    auto screen_ph = ScreenInteractive::Fullscreen();
-
-    auto descripcion_ph = hbox({
-        paragraph("pasas por la puerta de hierro es bastante grande y hay un pasillo y lo recorres sientes peligro cerca poco despues aparecen monstruos de mazmorra hay un duende una bruja y una araña discutiemdo quien te va a maatar ya que los 3 te consideran muy debil incluso 1vs1, que vas a hacer?")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_ph = {
-        "Pelear con el duende",
-        "Pelear con la bruja",
-        "Pelear con la araña",
-    };
-    int seleccion_ph = 0;
-    MenuOption menu_options_ph;
-    menu_options_ph.on_enter = [&] {
-        if (seleccion_ph == 0)
-        {
-            estado_actual3 = estadosit1_3::pelear_d;
-        }
-        else if (seleccion_ph == 1)
-        {
-            estado_actual3 = estadosit1_3::pelear_b;
-        }
-        else if (seleccion_ph == 2)
-        {
-            estado_actual3 = estadosit1_3::pelear_a;
-        }
-        
-        screen_ph.ExitLoopClosure()();
-    };
-
-    auto menu_ph = Menu(&opcines_ph, &seleccion_ph, menu_options_ph);
-
-    auto renderer_ph = Renderer(menu_ph, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_ph->Render() | center | border,
-            descripcion_ph,
-             }) | flex | border, 
-        });
-    });
-    screen_ph.Loop(renderer_ph);
+        screen_ph.Loop(crear_dialogo(opcines_ph, seleccion_ph, {
+            paragraph("pasas por la puerta de hierro es bastante grande y hay un pasillo y lo recorres sientes peligro cerca poco despues aparecen monstruos de mazmorra hay un duende una bruja y una araña discutiemdo quien te va a maatar ya que los 3 te consideran muy debil incluso 1vs1, que vas a hacer?"),
+        }, [&] {
+            if (seleccion_ph == 0) {
+                estado_actual3 = estadosit1_3::pelear_d;
+            } else if (seleccion_ph == 1) {
+                estado_actual3 = estadosit1_3::pelear_b;
+            } else if (seleccion_ph == 2) {
+                estado_actual3 = estadosit1_3::pelear_a;
+            }
+            screen_ph.ExitLoopClosure()();
+        }));
     }
 
     /* ******************************************************************************************************************************************************************* 
     ramicacion en caso de pelear con el duende ****************************************************************************************************************************************************** */
-    
-    if (estado_actual3 == estadosit1_3::pelear_d)
-    {
-    
-    auto screen_pd = ScreenInteractive::Fullscreen();
+    if (estado_actual3 == estadosit1_3::pelear_d) {
+        auto screen_pd = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pd = {
+            "permancer con tu espada y escudo al frente",
+            "solo atacar al duende",
+            "defenderte hasta un contraataque o desgaste ",
+        };
+        int seleccion_pd = 0;
 
-    auto descripcion_pd = hbox({
-        paragraph("dices con voz alta voy a pelear con el duende se siente imponencia en la atmosfera, el duende da un paso adelante saca su daga y sonrie de forma espantosa, los demas monstruos se van a otra parte, que vas hacer")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_pd = {
-        "permancer con tu espada y escudo al frente",
-        "solo atacar al duende",
-        "defenderte hasta un contraataque o desgaste ",
-    };
-    int seleccion_pd = 0;
-    MenuOption menu_options_pd;
-    menu_options_pd.on_enter = [&] {
-        if (seleccion_pd == 0)
-        {
-            estado_actual3 = estadosit1_3::muerte_pd;
-        }
-        else if (seleccion_pd == 1)
-        {
-            estado_actual3 = estadosit1_3::muerte_pd;
-        }
-        else if (seleccion_pd == 2)
-        {
-            estado_actual3 = estadosit1_3::muerte_pd;
-        }
-        
-        screen_pd.ExitLoopClosure()();
-    };
-
-    auto menu_pd = Menu(&opcines_pd, &seleccion_pd, menu_options_pd);
-
-    auto renderer_pd = Renderer(menu_pd, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_pd->Render() | center | border,
-            descripcion_pd,
-             }) | flex | border, 
-        });
-    });
-    screen_pd.Loop(renderer_pd);
+        screen_pd.Loop(crear_dialogo(opcines_pd, seleccion_pd, {
+            paragraph("dices con voz alta voy a pelear con el duende se siente imponencia en la atmosfera, el duende da un paso adelante saca su daga y sonrie de forma espantosa, los demas monstruos se van a otra parte, que vas hacer"),
+        }, [&] {
+            if (seleccion_pd == 0 || seleccion_pd == 1 || seleccion_pd == 2) {
+                estado_actual3 = estadosit1_3::muerte_pd;
+            }
+            screen_pd.ExitLoopClosure()();
+        }));
     }
 
     /* ****************************************************************************************************************************************************************************** 
     ramificacion de muerte al pelear con el duende*********************************************************************************************************************************** */
+    if (estado_actual3 == estadosit1_3::muerte_pd) {
+        auto screen_mpd = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_mpd = { "Salir" };
+        int seleccion_mpd = 0;
 
-    if (estado_actual3 == estadosit1_3::muerte_pd)
-    {
-    
-    auto screen_mpd = ScreenInteractive::Fullscreen();
-
-    auto descripcion_mpd = hbox({
-        paragraph("inicia la pelea el duende es rapido con su daga lo buen es que haces buen parry a sus ataques pero derrepente el duende cansado retrosede y saca otra daga y te ataca mas rapido que antes haste que en una de esas te acierta su daga en tu pecho y aunque inteste quitartela el dolor te entumese y te clava su otra daga en tu clavicula y mueres")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_mpd = {
-        "Salir",
-    };
-    int seleccion_mpd = 0;
-    MenuOption menu_options_mpd;
-    menu_options_mpd.on_enter = [&] {
-        if (seleccion_mpd == 0)
-        {
-            estado_actual3 = estadosit1_3::salir;
-        }
-        screen_mpd.ExitLoopClosure()();
-    };
-
-    auto menu_mpd = Menu(&opcines_mpd, &seleccion_mpd, menu_options_mpd);
-
-    auto renderer_mpd = Renderer(menu_mpd, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_mpd->Render() | center | border,
-            descripcion_mpd,
-             }) | flex | border, 
-        });
-    });
-    screen_mpd.Loop(renderer_mpd);
-    if(estado_actual3 == estadosit1_3::salir)return 0;
+        screen_mpd.Loop(crear_dialogo(opcines_mpd, seleccion_mpd, {
+            paragraph("inicia la pelea el duende es rapido con su daga lo buen es que haces buen parry a sus ataques pero derrepente el duende cansado retrosede y saca otra daga y te ataca mas rapido que antes haste que en una de esas te acierta su daga en tu pecho y aunque inteste quitartela el dolor te entumese y te clava su otra daga en tu clavicula y mueres"),
+        }, [&] {
+            if (seleccion_mpd == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            }
+            screen_mpd.ExitLoopClosure()();
+        }));
+        if (estado_actual3 == estadosit1_3::salir) return 0;
     }
 
     /* ********************************************************************************************************************************************
     Ramificaion al pelear con la bruja******************************************************************************************************************************** */
+    if (estado_actual3 == estadosit1_3::pelear_b) {
+        auto screen_pb = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pb = {
+            "permancer con tu espada y escudo al frente",
+            "solo atacar a la bruja",
+            "defenderte hasta poder realizar un contraataque ",
+        };
+        int seleccion_pb = 0;
 
-    if (estado_actual3 == estadosit1_3::pelear_b)
-    {
-    auto screen_pb = ScreenInteractive::Fullscreen();
-
-    auto descripcion_pb = hbox({
-        paragraph("dices con voz alta voy a pelear con la bruja se siente imponencia en la atmosfera, la bruja da un paso adelante saca una pocima extraña, los demas monstruos se van a otra parte, que vas hacer")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_pb = {
-        "permancer con tu espada y escudo al frente",
-        "solo atacar a la bruja",
-        "defenderte hasta poder realizar un contraataque ",
-    };
-    int seleccion_pb = 0;
-    MenuOption menu_options_pb;
-    menu_options_pb.on_enter = [&] {
-        if (seleccion_pb == 0)
-        {
-            estado_actual3 = estadosit1_3::muerte_pb;
-        }
-        else if (seleccion_pb == 1)
-        {
-            estado_actual3 = estadosit1_3::muerte_pb;
-        }
-        else if (seleccion_pb == 2)
-        {
-            estado_actual3 = estadosit1_3::muerte_pb;
-        }
-        
-        screen_pb.ExitLoopClosure()();
-    };
-
-    auto menu_pb = Menu(&opcines_pb, &seleccion_pb, menu_options_pb);
-
-    auto renderer_pb = Renderer(menu_pb, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_pb->Render() | center | border,
-            descripcion_pb,
-             }) | flex | border, 
-        });
-    });
-    screen_pb.Loop(renderer_pb);
+        screen_pb.Loop(crear_dialogo(opcines_pb, seleccion_pb, {
+            paragraph("dices con voz alta voy a pelear con la bruja se siente imponencia en la atmosfera, la bruja da un paso adelante saca una pocima extraña, los demas monstruos se van a otra parte, que vas hacer"),
+        }, [&] {
+            if (seleccion_pb == 0 || seleccion_pb == 1 || seleccion_pb == 2) {
+                estado_actual3 = estadosit1_3::muerte_pb;
+            }
+            screen_pb.ExitLoopClosure()();
+        }));
     }
 
     /* ***************************************************************************************************************************************************************
     ramificacion muerte al pelear con bruja ************************************************************************************************************************** */
+    if (estado_actual3 == estadosit1_3::muerte_pb) {
+        auto screen_mpb = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_mpb = { "Salir" };
+        int seleccion_mpb = 0;
 
-    if(estado_actual3 == estadosit1_3::muerte_pb)
-    {
-    auto screen_mpb = ScreenInteractive::Fullscreen();
-
-    auto descripcion_mpb = hbox({
-        paragraph("inicia la pelea, la bruja te lanza pociones sin parar algunas de acido otras de daño, logras evadir muchas, pero la bruja toma mucha distancia repentinamente y lanza un frasco distinto, es un gas lacrimojeno te deja muy segado y no ves nada en eso, siente que algo que te impacta en la cabesa y se rompe es acido cayecdo sobre ti y mueres.")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_mpb = {
-        "Salir",
-    };
-    int seleccion_mpb = 0;
-    MenuOption menu_options_mpb;
-    menu_options_mpb.on_enter = [&] {
-        if (seleccion_mpb == 0)
-        {
-            estado_actual3 = estadosit1_3::salir;
-        }
-        screen_mpb.ExitLoopClosure()();
-    };
-
-    auto menu_mpb = Menu(&opcines_mpb, &seleccion_mpb, menu_options_mpb);
-
-    auto renderer_mpb = Renderer(menu_mpb, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_mpb->Render() | center | border,
-            descripcion_mpb,
-             }) | flex | border, 
-        });
-    });
-    screen_mpb.Loop(renderer_mpb);
-    if(estado_actual3 == estadosit1_3::salir)return 0;
+        screen_mpb.Loop(crear_dialogo(opcines_mpb, seleccion_mpb, {
+            paragraph("inicia la pelea, la bruja te lanza pociones sin parar algunas de acido otras de daño, logras evadir muchas, pero la bruja toma mucha distancia repentinamente y lanza un frasco distinto, es un gas lacrimojeno te deja muy segado y no ves nada en eso, siente que algo que te impacta en la cabesa y se rompe es acido cayecdo sobre ti y mueres."),
+        }, [&] {
+            if (seleccion_mpb == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            }
+            screen_mpb.ExitLoopClosure()();
+        }));
+        if (estado_actual3 == estadosit1_3::salir) return 0;
     }
 
     /* **************************************************************************************************************************************************************** 
     ramificacion de pelea con araña************************************************************************************************************************************ */
+    if (estado_actual3 == estadosit1_3::pelear_a) {
+        auto screen_pa = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pa = {
+            "permancer con tu espada y escudo al frente",
+            "solo atacar a la araña",
+            "defenderte hasta poder realizar un contraataque ",
+        };
+        int seleccion_pa = 0;
 
-    if (estado_actual3 == estadosit1_3::pelear_a)
-    {
-    auto screen_pa = ScreenInteractive::Fullscreen();
-
-    auto descripcion_pa = hbox({
-        paragraph("dices con voz alta voy a pelear con la araña se siente imponencia en la atmosfera, la araña da un paso adelante ase un sonido intimidante, los demas monstruos se van a otra parte, que vas hacer")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_pa = {
-        "permancer con tu espada y escudo al frente",
-        "solo atacar a la araña",
-        "defenderte hasta poder realizar un contraataque ",
-    };
-    int seleccion_pa = 0;
-    MenuOption menu_options_pa;
-    menu_options_pa.on_enter = [&] {
-        if (seleccion_pa == 0)
-        {
-            estado_actual3 = estadosit1_3::muerte_pa;
-        }
-        else if (seleccion_pa == 1)
-        {
-            estado_actual3 = estadosit1_3::muerte_pa;
-        }
-        else if (seleccion_pa == 2)
-        {
-            estado_actual3 = estadosit1_3::muerte_pa;
-        }
-        
-        screen_pa.ExitLoopClosure()();
-    };
-
-    auto menu_pa = Menu(&opcines_pa, &seleccion_pa, menu_options_pa);
-
-    auto renderer_pa = Renderer(menu_pa, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_pa->Render() | center | border,
-            descripcion_pa,
-             }) | flex | border, 
-        });
-    });
-    screen_pa.Loop(renderer_pa);
+        screen_pa.Loop(crear_dialogo(opcines_pa, seleccion_pa, {
+            paragraph("dices con voz alta voy a pelear con la araña se siente imponencia en la atmosfera, la araña da un paso adelante ase un sonido intimidante, los demas monstruos se van a otra parte, que vas hacer"),
+        }, [&] {
+            if (seleccion_pa == 0 || seleccion_pa == 1 || seleccion_pa == 2) {
+                estado_actual3 = estadosit1_3::muerte_pa;
+            }
+            screen_pa.ExitLoopClosure()();
+        }));
     }
 
     /* ************************************************************************************************************************************************************** 
     ramificacion muerte al pelear con araña ************************************************************************************************************************* */
+    if (estado_actual3 == estadosit1_3::muerte_pa) {
+        auto screen_mpa = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_mpa = { "Salir" };
+        int seleccion_mpa = 0;
 
-    if(estado_actual3 == estadosit1_3::muerte_pa)
-    {
-    auto screen_mpa = ScreenInteractive::Fullscreen();
-
-    auto descripcion_mpa = hbox({
-        paragraph("inicia la pelea, la araña enviste de frente, usas tu escudo y la hases retroceder te ruge de forma intimidadte y vuelve a embestir con mas fuerza que la anterior despues la araña sube por las paredes hasta el techo te enviste fuertemente y aunque logras poner tu escudo se rompe y la araña te tiene en el piso hasta que te muerde la cara y mueres.")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_mpa = {
-        "Salir",
-    };
-    int seleccion_mpa = 0;
-    MenuOption menu_options_mpa;
-    menu_options_mpa.on_enter = [&] {
-        if (seleccion_mpa == 0)
-        {
-            estado_actual3 = estadosit1_3::salir;
-        }
-        screen_mpa.ExitLoopClosure()();
-    };
-
-    auto menu_mpa = Menu(&opcines_mpa, &seleccion_mpa, menu_options_mpa);
-
-    auto renderer_mpa = Renderer(menu_mpa, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_mpa->Render() | center | border,
-            descripcion_mpa,
-             }) | flex | border, 
-        });
-    });
-    screen_mpa.Loop(renderer_mpa);
+        screen_mpa.Loop(crear_dialogo(opcines_mpa, seleccion_mpa, {
+            paragraph("inicia la pelea, la araña enviste de frente, usas tu escudo y la hases retroceder te ruge de forma intimidadte y vuelve a embestir con mas fuerza que la anterior despues la araña sube por las paredes hasta el techo te enviste fuertemente y aunque logras poner tu escudo se rompe y la araña te tiene en el piso hasta que te muerde la cara y mueres."),
+        }, [&] {
+            if (seleccion_mpa == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            }
+            screen_mpa.ExitLoopClosure()();
+        }));
+        if (estado_actual3 == estadosit1_3::salir) return false;
     }
 
     /* ****************************************************************************************************************************************************************************** 
     *********************************************************************************************************************************************************************************
     empiensa las ramificaciones de pasillo der ************************************************************************************************************************************** */
+    if (estado_actual3 == estadosit1_3::pasillo_der) {
+        auto screen_p_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_p_der = {
+            "Devolverte por el pasillo",
+            "Seguir por el mismo",
+        };
+        int seleccion_p_der = 0;
 
-    if(estado_actual3 == estadosit1_3::pasillo_der)
-    {
-    auto screen_p_der = ScreenInteractive::Fullscreen();
-
-    auto descripcion_p_der = hbox({
-        paragraph("Recorres el pasillo derecho, es amplio y largo, encuentras otra sala amplia, que vas a hacer? ")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_p_der = {
-        "Devolverte por el pasillo",
-        "Seguir por el mismo",
-    };
-    int seleccion_p_der = 0;
-    MenuOption menu_options_p_der;
-    menu_options_p_der.on_enter = [&] {
-
-         if (seleccion_p_der == 0)
-        {
-            estado_actual3 = estadosit1_3::devolverse;
-        }
-        else if (seleccion_p_der == 1)
-        {
-            estado_actual3 = estadosit1_3::seguir;
-        }
-
-        screen_p_der.ExitLoopClosure()();
-    };
-
-    auto menu_p_der = Menu(&opcines_p_der, &seleccion_p_der, menu_options_p_der);
-
-    auto renderer_p_der = Renderer(menu_p_der, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_p_der->Render() | center | border,
-            descripcion_p_der,
-             }) | flex | border, 
-        });
-    });
-    screen_p_der.Loop(renderer_p_der);
+        screen_p_der.Loop(crear_dialogo(opcines_p_der, seleccion_p_der, {
+            paragraph("Recorres el pasillo derecho, es amplio y largo, encuentras otra sala amplia, que vas a hacer? "),
+        }, [&] {
+            if (seleccion_p_der == 0) {
+                estado_actual3 = estadosit1_3::devolverse;
+            } else if (seleccion_p_der == 1) {
+                estado_actual3 = estadosit1_3::seguir;
+            }
+            screen_p_der.ExitLoopClosure()();
+        }));
     }
+
     /* ****************************************************************************************************************************************** 
     ramificacion de pasillo derecho devolverse ************************************************************************************************** */
-    if(estado_actual3 == estadosit1_3::devolverse)
-    {
-    auto screen_devo = ScreenInteractive::Fullscreen();
+    if (estado_actual3 == estadosit1_3::devolverse) {
+        auto screen_devo = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_devo = {
+            "huir",
+            "atacarlo",
+        };
+        int seleccion_devo = 0;
 
-    auto descripcion_devo = hbox({
-        paragraph("decides de volverte, te encuentras con un duende que quiere matarte que vas a hacer? ")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_devo = {
-        "huir",
-        "atacarlo",
-    };
-    int seleccion_devo = 0;
-    MenuOption menu_options_devo;
-    menu_options_devo.on_enter = [&] {
-
-         if (seleccion_devo == 0)
-        {
-            estado_actual3 = estadosit1_3::huir;
-        }
-        else if (seleccion_devo == 1)
-        {
-            estado_actual3 = estadosit1_3::atk_duende;
-        }
-
-        screen_devo.ExitLoopClosure()();
-    };
-
-    auto menu_devo = Menu(&opcines_devo, &seleccion_devo, menu_options_devo);
-
-    auto renderer_devo = Renderer(menu_devo, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_devo->Render() | center | border,
-            descripcion_devo,
-             }) | flex | border, 
-        });
-    });
-    screen_devo.Loop(renderer_devo);
+        screen_devo.Loop(crear_dialogo(opcines_devo, seleccion_devo, {
+            paragraph("decides de volverte, te encuentras con un duende que quiere matarte que vas a hacer? "),
+        }, [&] {
+            if (seleccion_devo == 0) {
+                estado_actual3 = estadosit1_3::huir;
+            } else if (seleccion_devo == 1) {
+                estado_actual3 = estadosit1_3::atk_duende;
+            }
+            screen_devo.ExitLoopClosure()();
+        }));
     }
+
     /* ******************************************************************************************************************************
     ramificacion muerte pasillo derecho al huir ************************************************************************************* */
-    if(estado_actual3 == estadosit1_3::huir)
-    {
-    auto screen_h = ScreenInteractive::Fullscreen();
+    if (estado_actual3 == estadosit1_3::huir) {
+        auto screen_h = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_h = { "Salir" };
+        int seleccion_h = 0;
 
-    auto descripcion_h = hbox({
-        paragraph("decides huir, el duende te persigue pero al entrar en la sala amplia pisas una trampa de avalancha y mueres (y el duede se rie de ti)")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_h = {
-        "Salir", 
-    };
-    int seleccion_h = 0;
-    MenuOption menu_options_h;
-    menu_options_h.on_enter = [&] {
-
-         if (seleccion_h == 0)
-        {
-            estado_actual3 = estadosit1_3::salir;
-        }
-
-        screen_h.ExitLoopClosure()();
-    };
-
-    auto menu_h = Menu(&opcines_h, &seleccion_h, menu_options_h);
-
-    auto renderer_h = Renderer(menu_h, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_h->Render() | center | border,
-            descripcion_h,
-             }) | flex | border, 
-        });
-    });
-    screen_h.Loop(renderer_h);
-    if (estado_actual3 == estadosit1_3::salir)return false;
+        screen_h.Loop(crear_dialogo(opcines_h, seleccion_h, {
+            paragraph("decides huir, el duende te persigue pero al entrar en la sala amplia pisas una trampa de avalancha y mueres (y el duede se rie de ti)"),
+        }, [&] {
+            if (seleccion_h == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            }
+            screen_h.ExitLoopClosure()();
+        }));
+        if (estado_actual3 == estadosit1_3::salir) return false;
     }
 
     /* *************************************************************************************************************************************
     ramificacion muerte en caso de atacar al duende **************************************************************************************** */
+    if (estado_actual3 == estadosit1_3::atk_duende) {
+        auto screen_atk_duende = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_atk_duende = { "Salir" };
+        int seleccion_atk_duende = 0;
 
-    if(estado_actual3 == estadosit1_3::atk_duende)
-    {
-    auto screen_atk_duende = ScreenInteractive::Fullscreen();
-
-    auto descripcion_atk_duende = hbox({
-        paragraph("decides atacar al duende, pero resulto ser que el duende es mas agil que tu y pesar de que bloqueas varios de sus ataques encuentra un punto debil y te clava su daga ahi y mueres. (y el duede se rie de ti)")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_atk_duende = {
-        "Salir",
-       
-    };
-    int seleccion_atk_duende = 0;
-    MenuOption menu_options_atk_duende;
-    menu_options_atk_duende.on_enter = [&] {
-
-         if (seleccion_atk_duende == 0)
-        {
-            estado_actual3 = estadosit1_3::salir;
-        }
-
-        screen_atk_duende.ExitLoopClosure()();
-    };
-
-    auto menu_atk_duende = Menu(&opcines_atk_duende, &seleccion_atk_duende, menu_options_atk_duende);
-
-    auto renderer_atk_duende = Renderer(menu_atk_duende, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_atk_duende->Render() | center | border,
-            descripcion_atk_duende,
-             }) | flex | border, 
-        });
-    });
-    screen_atk_duende.Loop(renderer_atk_duende);
-    if (estado_actual3 == estadosit1_3::salir)return false;
+        screen_atk_duende.Loop(crear_dialogo(opcines_atk_duende, seleccion_atk_duende, {
+            paragraph("decides atacar al duende, pero resulto ser que el duende es mas agil que tu y pesar de que bloqueas varios de sus ataques encuentra un punto debil y te clava su daga ahi y mueres. (y el duede se rie de ti)"),
+        }, [&] {
+            if (seleccion_atk_duende == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            }
+            screen_atk_duende.ExitLoopClosure()();
+        }));
+        if (estado_actual3 == estadosit1_3::salir) return false;
     }
+
     /* *********************************************************************************************************************************** 
     ramificacion muerte de pasillo derecho en caso de seguir ***************************************************************************** */
-     if(estado_actual3 == estadosit1_3::seguir)
-    {
-    auto screen_p_der = ScreenInteractive::Fullscreen();
+    if (estado_actual3 == estadosit1_3::seguir) {
+        auto screen_p_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_p_der = { "Salir" };
+        int seleccion_p_der = 0;
 
-    auto descripcion_p_der = hbox({
-        paragraph("decides seguir por esa sala, pero al entrar en la sala amplia pisas una trampa de avalancha y mueres. ")
-    }) | flex | border;
-   
-    std::vector<std::string> opcines_p_der = {
-        "Salir",
-       
-    };
-    int seleccion_p_der = 0;
-    MenuOption menu_options_p_der;
-    menu_options_p_der.on_enter = [&] {
-
-         if (seleccion_p_der == 0)
-        {
-            estado_actual3 = estadosit1_3::salir;
-        }
-
-        screen_p_der.ExitLoopClosure()();
-    };
-
-    auto menu_p_der = Menu(&opcines_p_der, &seleccion_p_der, menu_options_p_der);
-
-    auto renderer_p_der = Renderer(menu_p_der, [&]() {
-        return vbox({
-            cabesera1,
-           hbox({ menu_p_der->Render() | center | border,
-            descripcion_p_der,
-             }) | flex | border, 
-        });
-    });
-    screen_p_der.Loop(renderer_p_der);
-    if (estado_actual3 == estadosit1_3::salir)return false;
+        screen_p_der.Loop(crear_dialogo(opcines_p_der, seleccion_p_der, {
+            paragraph("decides seguir por esa sala, pero al entrar en la sala amplia pisas una trampa de avalancha y mueres. "),
+        }, [&] {
+            if (seleccion_p_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            }
+            screen_p_der.ExitLoopClosure()();
+        }));
+        if (estado_actual3 == estadosit1_3::salir) return false;
     }
 
     /* ********************************************************************************************************************************************
     ***********************************************************************************************************************************************
     ramioficaciones de pasillo izquierdo *********************************************************************************************************** */
-
     
- return false;   
+    return false;
 }
