@@ -123,6 +123,8 @@ bool sit1_3(){
         }));
     }
 
+    if (estado_actual3 == estadosit1_3::vivo) return true;
+
     /*****************************************************************************************************************************************************************
     *****************************************************************************************************************************************************************
     ramificaciones al pasar por la puerta de hierro ****************************************************************************************************************** */
@@ -495,7 +497,7 @@ bool sit1_3(){
     /* ***************************************************************************************************************************************************************
     muerte al devolter por el pasillo ******************************************************************************************************************************** */
 
-    if (estado_actual3 == estadosit1_3::muerte_seguir) {
+    if (estado_actual3 == estadosit1_3::devolverse_izq) {
         auto screen_m_devo = ScreenInteractive::Fullscreen();
         std::vector<std::string> opcines_m_devo = {"Salir",};
         int seleccion_m_devo = 0;
@@ -513,6 +515,33 @@ bool sit1_3(){
     /* ***********************************************************************************************************************************************************
     **************************************************************************************************************************************************************
     ramificaciones de puerta comun de madera derecha************************************************************************************************************** */
+
+    if (estado_actual3 == estadosit1_3::puerta_der) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = {
+            "Ir por la puerta de hierro simple",
+            "Ir por el hueco donde se ve el marco de una puerta",
+            "Ir por la puerta mas cercana a ti",
+            "",
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("Recorres el pasillo izquierdo aun mas, encuentras varia puertas viejas y el pasillo todavia se extiende mas. que vas hacer?"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::muerte_puerta_h_simple;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::muerte_puerta_hueca;
+            }else if (seleccion_pu_der == 2) {
+                estado_actual3 = estadosit1_3::muerte_puerta_cercana;
+            }else if (seleccion_pu_der == 3) {
+                estado_actual3 = estadosit1_3::muerte_seguir;
+            }
+            screen_pu_der.ExitLoopClosure()();
+        }));
+    }
+
 
     return false;
 }

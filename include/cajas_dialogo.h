@@ -33,7 +33,7 @@ public:
         options.on_enter = std::move(al_enter);
         options.entries_option.transform = [](EntryState state) {
             if (state.focused) {
-                return text("> [" + state.label + "]") | bold;
+                return text("> [" + state.label + "]") | bold | color(Color::White);
             }
             return text("   " + state.label);
         };
