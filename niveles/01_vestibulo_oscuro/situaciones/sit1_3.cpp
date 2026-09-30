@@ -53,6 +53,13 @@ enum class estadosit1_3{
     muerte_puerta_cercana,
     muerte_seguir,
 
+    // ramificaciones de puerta derecha
+
+    revisar_armeria,
+    devolter_armeria,
+    puerta_armeria,
+    pasillo_armeria,
+
     salir,
 };
 
@@ -519,29 +526,57 @@ bool sit1_3(){
     if (estado_actual3 == estadosit1_3::puerta_der) {
         auto screen_pu_der = ScreenInteractive::Fullscreen();
         std::vector<std::string> opcines_pu_der = {
-            "Ir por la puerta de hierro simple",
-            "Ir por el hueco donde se ve el marco de una puerta",
-            "Ir por la puerta mas cercana a ti",
-            "",
+            "revisar armeria",
+            "devolterte en busca de otro camino",
+            "ir por la puerta de la armeria",
+            "ir por el pasillo de la armeria",
         };
         int seleccion_pu_der = 0;
 
         screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
-            paragraph("Recorres el pasillo izquierdo aun mas, encuentras varia puertas viejas y el pasillo todavia se extiende mas. que vas hacer?"),
+            paragraph("atraviesas esa puerta entras en algun tipo de armeria extraña, aun que todas esas armas estan demaciado viejas como para usarse, tambien hay varias puertas y pasillos que vas a hacer  que vas hacer?"),
         }, [&] {
             if (seleccion_pu_der == 0) {
-                estado_actual3 = estadosit1_3::muerte_puerta_h_simple;
+                estado_actual3 = estadosit1_3::revisar_armeria;
             } else if (seleccion_pu_der == 1) {
-                estado_actual3 = estadosit1_3::muerte_puerta_hueca;
+                estado_actual3 = estadosit1_3::devolter_armeria;
             }else if (seleccion_pu_der == 2) {
-                estado_actual3 = estadosit1_3::muerte_puerta_cercana;
+                estado_actual3 = estadosit1_3::puerta_armeria;
             }else if (seleccion_pu_der == 3) {
-                estado_actual3 = estadosit1_3::muerte_seguir;
+                estado_actual3 = estadosit1_3::pasillo_armeria;
             }
             screen_pu_der.ExitLoopClosure()();
+
         }));
     }
+    /* ************************************************************************************************************************************************************************************************ 
+    ramificacion al revisar armeria ******************************************************************************************************************************************************************* */
 
+    if (estado_actual3 == estadosit1_3::revisar_armeria) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = {
+            "revisar armeria",
+            "devolterte en busca de otro camino", //acomodar
+            "ir por la puerta de la armeria",
+            "ir por el pasillo de la armeria",
+        };
+        int seleccion_pu_der = 0;
 
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("atraviesas esa puerta entras en algun tipo de armeria extraña, aun que todas esas armas estan demaciado viejas como para usarse, tambien hay varias puertas y pasillos que vas a hacer  que vas hacer?"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::revisar_armeria;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::devolter_armeria;
+            }else if (seleccion_pu_der == 2) {
+                estado_actual3 = estadosit1_3::puerta_armeria;
+            }else if (seleccion_pu_der == 3) {
+                estado_actual3 = estadosit1_3::pasillo_armeria;
+            }
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+    }
     return false;
 }
