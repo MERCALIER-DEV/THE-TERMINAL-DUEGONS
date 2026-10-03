@@ -60,6 +60,19 @@ enum class estadosit1_3{
     puerta_armeria,
     pasillo_armeria,
 
+    //mas ramificaciones al revisar la armeria
+
+    tomar,
+    no_tomar,
+
+    // ramificaciones de muerte al revisar armeria
+
+    huir_gunnoll,
+    luchar_gunnoll,
+
+    atacar_gunnoll,
+    defender_gunnoll,
+
     salir,
 };
 
@@ -555,28 +568,92 @@ bool sit1_3(){
     if (estado_actual3 == estadosit1_3::revisar_armeria) {
         auto screen_pu_der = ScreenInteractive::Fullscreen();
         std::vector<std::string> opcines_pu_der = {
-            "revisar armeria",
-            "devolterte en busca de otro camino", //acomodar
-            "ir por la puerta de la armeria",
-            "ir por el pasillo de la armeria",
+            "tomar la espada y el escudo y salir por la puerta de la armeria",
+            "No tomar nada y salir por la puerta de la armeria", 
+            
         };
         int seleccion_pu_der = 0;
 
         screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
-            paragraph("atraviesas esa puerta entras en algun tipo de armeria extraña, aun que todas esas armas estan demaciado viejas como para usarse, tambien hay varias puertas y pasillos que vas a hacer  que vas hacer?"),
+            paragraph("se revisa la armeria, hay muchas armas viejas y oxidadas, pero hay una espada que parece estar en buen estado y un escudo que parece ser de buena calidad, auque tiene una nota gabarateada en la que logras leer, NO solamente que vas a hacer?"),
         }, [&] {
             if (seleccion_pu_der == 0) {
-                estado_actual3 = estadosit1_3::revisar_armeria;
+                estado_actual3 = estadosit1_3::tomar;
             } else if (seleccion_pu_der == 1) {
-                estado_actual3 = estadosit1_3::devolter_armeria;
-            }else if (seleccion_pu_der == 2) {
-                estado_actual3 = estadosit1_3::puerta_armeria;
-            }else if (seleccion_pu_der == 3) {
-                estado_actual3 = estadosit1_3::pasillo_armeria;
+                estado_actual3 = estadosit1_3::no_tomar;
             }
             screen_pu_der.ExitLoopClosure()();
 
         }));
     }
+
+    /* ****************************************************************************************************************************************************************************** 
+    ramificacion al tomar las cosas *************************************************************************************************************************************************  */
+
+      if (estado_actual3 == estadosit1_3::tomar) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = {
+            "tomar la espada y el escudo y salir por la puerta de la armeria",
+            "No tomar nada y salir por la puerta de la armeria", 
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("Tomas la espada y el escudo, te sientes mas seguro y preparado para lo que venga, decides salir por la puerta de la armeria,  pero aparece un gunnoll, parece que es un buen momento para luchar, o huir que vas hacer que vas a hacer?"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::luchar_gunnoll;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::huir_gunnoll;
+            }
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+    }
+
+    /************************************************************************************************************************************************************************
+     ramificacion muerte al pelear con gunoll********************************************************************************************************************************* */
+
+    if (estado_actual3 == estadosit1_3::luchar_gunnoll) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = {
+            "Atacarlo de frente",
+            "defenderte y contraatacar", 
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("Decides luchar contra el gnoll como vas a empesar"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::atacar_gunnoll;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::defender_gunnoll;
+            }
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+    }
+    /* ****************************************************************************************************************************************
+     **************************************************************************************************************************************** */
+
+     if (estado_actual3 == estadosit1_3::atacar_gunnoll) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("Atacan con fuerza al gunoll con la espada el gunoll se asusta, pero... se rompe tu espada gunoll enviste con fuerza y mueres"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    /* ************************************************************************************************************************************************* */
     return false;
 }
