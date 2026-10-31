@@ -80,6 +80,12 @@ enum class estadosit1_3{
     dia_smile,
     troll_opcion,
 
+    // ramificaciones de muerte al devolverte por armeria
+
+    frotar,
+    pisar,
+    tocar_antorcha,
+
     salir,
 };
 
@@ -727,10 +733,173 @@ bool sit1_3(){
             screen_pu_der.ExitLoopClosure()();
 
         }));
-        if(estado_actual3 == estadosit1_3::salir)return false;
+        
     }
     /* *************************************************************************************************************************************************************************************************************
-    ********************************************************************************************************************************************************************************************************* */
+   ramificacion de muerte al atacar al smile ********************************************************************************************************************************************************************************************************* */
+
+    if (estado_actual3 == estadosit1_3::atk_smile) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides atacar al smile, pero resulta que el smile es mas agil que tu y se te pega de tu cuerpo te ataca con su espada y mueres"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+    /* ************************************************************************************************************************************
+    ramificacion al defenderse del smile ************************************************************************************************** */
+
+     if (estado_actual3 == estadosit1_3::def_smile) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides defenderte al smile, pero resulta que el smile es muy agil trepa por tu escudo y derrenpente te salta a la cabeza asfixiandote y mueres"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+    /******************************************************************************************************************************************
+    ramificacion al dialogar ****************************************************************************************************************** */
+    if (estado_actual3 == estadosit1_3::dia_smile) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides dialogar con el smile, pero como ve que no vas a atacar ni defenderte el te ataca primero y mueres"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    /* *****************************************************************************************************************************************
+    ramificacion trolleo ************************************************************************************************************************* */
+
+    if (estado_actual3 == estadosit1_3::troll_opcion) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "#@*$%",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("@##$%#$%^%&%^&^&*^*(&*(*(*(((**&*&&^%^$%$#@!!@#!@#$%^*(%##$%^&*()*(%##$@#$%$$#[ERROR]%$#$@#^&&*()(*^&!@#$^&*()()&#$###$%^** [iniciando protocolo de autodestruccion]"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+    /* *******************************************************************************************************************************
+    ramificaciones en caso de devolvete a buscar otro pasillo *********************************************************************************************************************************/
+   
+    if (estado_actual3 == estadosit1_3::devolter_armeria) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der =
+        { 
+            "frotar la pared hasta que haga algo",
+            "tocar una antorcha",
+            "pisar una baldosa cerca de la pared",
+           
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides devolverte de la armeria devuelta a la sala principal explorando un poco mas esa sala encuentras una pared que parece tener algun mecanismo oculto que vas hacer?"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::frotar;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::tocar_antorcha;
+            } else if (seleccion_pu_der == 2) {
+                estado_actual3 = estadosit1_3::pisar; 
+            }
+
+            screen_pu_der.ExitLoopClosure()();
+        }));
+        
+    }
+
+    /* **********************************************************************************************************************************
+    ramificacion al tocar antorcha ****************************************************************************************************** */
+
+    if (estado_actual3 == estadosit1_3::frotar) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("frotabas la pared con ganas hasta que escuchas click te alegras pero en realidad activaste un mecanismos de trampas de avalancha donde una roca de buen peso te cae en la cabeza y mueres"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    /* *******************************************************************************************************************************************************************
+    ramificacion al tocar antorcha ************************************************************************************************************************* */
+
+     if (estado_actual3 == estadosit1_3::frotar) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("tocas la antorcha la sujetas bien y jalas se rompe la antorcha pero resulta que el fuego de esa antorcha no era normal, era un espiritu de fuego que se extiende desde tu mano hasta tu cuerpo quemandote vivo y mueres"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    /* *****************************************************************************************************************************
+    ramificacion al pisar baldosas (de verdad que este prota es muy pendejo, pero yo soy un genio a ja aj a ja)************************************************************************************************************************/ 
+
+     if (estado_actual3 == estadosit1_3::pisar) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("pisas baldosas con fuerza cerca de la pares te alegres un poco hasta que sientes como un dardo te atraviesa el pecho y mueres."),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
 
     return false;
 }
