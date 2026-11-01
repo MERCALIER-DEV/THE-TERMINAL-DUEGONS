@@ -86,6 +86,17 @@ enum class estadosit1_3{
     pisar,
     tocar_antorcha,
 
+    // ramificaciones al pasar por la puerta de la armeria
+
+    origen_llanto,
+    tomar_martillo,
+    devolverte_armeria,
+
+    //ramifiaciones de muerte al ir al origen del llanto
+
+    matar_nino,
+    ignorar_nino,
+
     salir,
 };
 
@@ -900,6 +911,122 @@ bool sit1_3(){
         }));
         if(estado_actual3 == estadosit1_3::salir)return false;
     }
+
+    /* *****************************************************************************************************************************************************************
+    Ramificaciones al cruzar puerta************************************************************************************************************************* */
+    
+    if (estado_actual3 == estadosit1_3::puerta_armeria) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = {
+            "Devolterte en busca de otro camino",
+            "Ir al origen del llanto",
+            "Tomar un martillo y golpear un yunque",
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("atraviesas la puerta que esta en la armeria, al parecer lleva a la sala de fundicion de armas, hay yunques y varias herramientas de herreria, se escucha un llanto cerca, que vas hacer?"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::devolverte_armeria;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::origen_llanto;
+            }else if (seleccion_pu_der == 2) {
+                estado_actual3 = estadosit1_3::tomar_martillo;
+            }
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+    }
+
+    /* ************************************************************************************************************************************************************************
+    ramificacion al ir al origen del llanto ********************************************************************************************************************************* */
+
+    if (estado_actual3 == estadosit1_3::origen_llanto) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = {
+            "Matar al niño",
+            "ignorar al niño",
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("Te diriges al origen del llanto, hay un humano pequeño, parece un niño, esta pidiendo ayuda, que vas hacer?"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::matar_nino;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::ignorar_nino;
+            }
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+    }
+
+    /* ************************************************************************************************************************************************************************
+    ramificacion muerte al ir al origen del llanto ***************************************************************************************************************** */
+    
+     if (estado_actual3 == estadosit1_3::matar_nino) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("Decides matar al niño, pero resulta que el niño era un doppelganger disfrazado, que te ataca demacido rapido antes de que puedas reaccionar y mueres."),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+    
+    /* segunda forma de morir en el origen del llanto *******************************/
+
+      if (estado_actual3 == estadosit1_3::ignorar_nino) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("Decides ignorar al niño, pero resulta que el niño era un doppelganger disfrazado, que te ataca por tu espalda demacido rapido antes de que puedas reaccionar y mueres."),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    /* ******************************************************************************************************************
+    ramificaciones al devolverte por a la armeria */
+    
+    if (estado_actual3 == estadosit1_3::devolverte_armeria) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = {
+            "Devolterte en busca de otro camino",
+            "Ir al origen del llanto",
+            
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides devolverte del pasillo de la armeria devuelta a la sala principal explorando un poco mas a los alrededores encuentras un pasillo que no viste antes, decides ir por alli te encuentras con un gnull furioso que se prepara para atacarte, que vas hacer?"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::devolverte_armeria;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::origen_llanto;
+            }
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+    }
+
 
     return false;
 }
