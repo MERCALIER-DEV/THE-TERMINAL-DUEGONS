@@ -97,6 +97,16 @@ enum class estadosit1_3{
     matar_nino,
     ignorar_nino,
 
+    //ramificaciones al de irce de la armeria desde la puerta de la misma
+
+    tomar_pocima,
+    atacar_bruja,
+
+    //ramificaciones al tomar el martillo
+
+    huir_sala,
+    esperar_sala,
+
     salir,
 };
 
@@ -853,7 +863,7 @@ bool sit1_3(){
     }
 
     /* **********************************************************************************************************************************
-    ramificacion al tocar antorcha ****************************************************************************************************** */
+    ramificacion al frotar la pared ****************************************************************************************************** */
 
     if (estado_actual3 == estadosit1_3::frotar) {
         auto screen_pu_der = ScreenInteractive::Fullscreen();
@@ -875,9 +885,9 @@ bool sit1_3(){
     /* *******************************************************************************************************************************************************************
     ramificacion al tocar antorcha ************************************************************************************************************************* */
 
-     if (estado_actual3 == estadosit1_3::frotar) {
+     if (estado_actual3 == estadosit1_3::tocar_antorcha) {
         auto screen_pu_der = ScreenInteractive::Fullscreen();
-        std::vector<std::string> opcines_pu_der = { "salir",};
+        std::vector<std::string> opcines_pu_der = { "salir"};
         int seleccion_pu_der = 0;
 
         screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
@@ -1003,28 +1013,131 @@ bool sit1_3(){
     }
 
     /* ******************************************************************************************************************
-    ramificaciones al devolverte por a la armeria */
+    ramificaciones al devolverte por a la armeria ******************************************************************** */
     
     if (estado_actual3 == estadosit1_3::devolverte_armeria) {
         auto screen_pu_der = ScreenInteractive::Fullscreen();
         std::vector<std::string> opcines_pu_der = {
-            "Devolterte en busca de otro camino",
-            "Ir al origen del llanto",
-            
+            "tomar la pocima de la bruja",
+            "atacar la bruja",   
         };
         int seleccion_pu_der = 0;
 
         screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
-            paragraph("decides devolverte del pasillo de la armeria devuelta a la sala principal explorando un poco mas a los alrededores encuentras un pasillo que no viste antes, decides ir por alli te encuentras con un gnull furioso que se prepara para atacarte, que vas hacer?"),
+            paragraph("decides devolverte del pasillo de la armeria devuelta a la sala principal explorando un poco mas a los alrededores encuentras un pasillo que no viste antes, decides ir por alli te encuentras con una bruja sospechosa que te ofrece una pocima extraña, que vas hacer?"),
         }, [&] {
             if (seleccion_pu_der == 0) {
-                estado_actual3 = estadosit1_3::devolverte_armeria;
+                estado_actual3 = estadosit1_3::tomar_pocima;
             } else if (seleccion_pu_der == 1) {
-                estado_actual3 = estadosit1_3::origen_llanto;
+                estado_actual3 = estadosit1_3::atacar_bruja;
             }
             screen_pu_der.ExitLoopClosure()();
 
         }));
+    }
+
+    /* ***************************************************************************************************************************
+    ramificacion de muerte con la bruja *************************************************************************************** */
+
+    //al tomar la pocima
+     if (estado_actual3 == estadosit1_3::tomar_pocima){
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("tomas la pocima de la bruja, te quieres ir pero la bruja insite en que la bebas la pocima en este momento, la bebes y resulto ser que era un frasco de veneno y mueres."),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    //al atacar la bruja
+
+     if (estado_actual3 == estadosit1_3::atacar_bruja){
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides atacar a la bruja, te mueves hacia ella rapidamente, la bruja retrosede rapidamente y te lansa una pocima de veneno que te pega en la cara y mueres."),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    /* **************************************************************************************************************
+    ramificaciones al tomar el martillo ************************************************************************** */
+
+     if (estado_actual3 == estadosit1_3::tomar_martillo) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { 
+            "Espera a los monstruos",
+            "huir lo mas rapido pocible",
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides dar un buen martillaso al yunque pero alertasrte a todos los monstruos de cercanos que vas hacer? "),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::esperar_sala;
+
+            } else if (seleccion_pu_der = 1){
+                estado_actual3 = estadosit1_3::huir_sala;
+            }
+            screen_pu_der.ExitLoopClosure()();
+
+        }));   
+    }
+
+    /* *******************************************************************************************************
+    ramificaciones de muerte al golpear el yunque ********************************************************* */
+
+    //al esperar
+     if (estado_actual3 == estadosit1_3::esperar_sala){
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides quedarte en la sala a esperar los montruos, no pasa mucho tiempo cuando sale un duende, una bruja y una arana los cuales te rodean de forma muy rapida atacandote los 3 y mueres"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    //al huir
+     if (estado_actual3 == estadosit1_3::huir_sala){
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides huir de la sala rapidamente, en tu huida encuentras a un smile y una bruja que te atacan muy rapido y mueres"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
     }
 
 

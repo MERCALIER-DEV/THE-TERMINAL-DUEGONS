@@ -12,17 +12,14 @@
 #include <ftxui/component/component.hpp>
 
 int main(){
-
-    
-    
-          
+   
     bool juego_activo = true;
 
-    while (juego_activo)
-    {
+    while (juego_activo){
+
         if(jugar_nivel1())
         {
-            juego_activo = false;
+            
 
         }else
         {
