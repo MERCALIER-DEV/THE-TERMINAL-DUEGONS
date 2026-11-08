@@ -107,6 +107,17 @@ enum class estadosit1_3{
     huir_sala,
     esperar_sala,
 
+    //ramificaciones al tomar el pasillo de la armeria
+
+    pasillo_der_ar,
+    pasillo_izq_ar,
+    puerta_ar,
+
+    // ramificacion de muerte de pasillo de la armeria
+
+    explorar_sala_ar,
+    irte_sala_ar,
+
     salir,
 };
 
@@ -1140,6 +1151,136 @@ bool sit1_3(){
         if(estado_actual3 == estadosit1_3::salir)return false;
     }
 
+
+    if (estado_actual3 == estadosit1_3::pasillo_armeria) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = {
+            "tomar el pasillo derecho",
+            "tomar el pasillo izquierdo",
+            "ir por la puerta",
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides recorrer el pasillo de la armeria, es bastante amplio, despues de un rato encuentras 2 pasillo y una puerta, que vas hacer?"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::pasillo_der_ar;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::pasillo_izq_ar;
+            }else if (seleccion_pu_der == 2) {
+                estado_actual3 = estadosit1_3::puerta_ar;
+            }
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+    }
+
+    /* **********************************************************************************************************************
+    ramificaciones de muerte de pasillo de la armeria *********************************************************************** */
+
+    // pasillo derecho
+    if (estado_actual3 == estadosit1_3::pasillo_der_ar){
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("tomas el pasillo derecho, notas que es mas largo que cualquier otro pasillo, hasta que te das cuenta que era una trampa de pasillo infinito de la cual no puedes salir sin el hechiso adecuado y eventualmente te da hambre y mueres"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    //pasillo izquierdo
+
+    if (estado_actual3 == estadosit1_3::pasillo_izq_ar){
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides recorrer el pasillo izquierdo, es bastante corto, notas algo de humedad en el piso y techo, hasta que derrepente el pasillo atras de ti se cierra repentinamente y la sala se empiesa a llenar de agua estancada eventualmente la sala se llena de agua te ahogas y mueres."),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    /* *************************************************************************************************************************************************************************
+    ramificacion de puerta del pasillo de la armeria *************************************************************************************************************************** */
+
+    if (estado_actual3 == estadosit1_3::puerta_ar) {
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = {
+            "explorar la sala",
+            "irte de esa sala",
+            
+        };
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides tomar la puerta que estaba en el pasillo de la armeria, lleva a otra sala, parece que no hay nada alli pero tienes algo de curiosidad, que vas hacer?"),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::explorar_sala_ar;
+            } else if (seleccion_pu_der == 1) {
+                estado_actual3 = estadosit1_3::irte_sala_ar;
+            }
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+    }
+
+    /* **************************************************************************************************
+    ramificaciones de muerte explorar sala ************************************************************************* */
+
+    //explorar
+    if (estado_actual3 == estadosit1_3::explorar_sala_ar){
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("exploras la sala pero resulta que habia una trampa de invocacion de monstruos, los cuales les logras dar algo de pelea pero por desgaste mueres "),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    //irte
+     if (estado_actual3 == estadosit1_3::irte_sala_ar){
+        auto screen_pu_der = ScreenInteractive::Fullscreen();
+        std::vector<std::string> opcines_pu_der = { "Salir",};
+        int seleccion_pu_der = 0;
+
+        screen_pu_der.Loop(crear_dialogo(opcines_pu_der, seleccion_pu_der, {
+            paragraph("decides irte de la sala pero resulta que habia una trampa de invocacion de monstruos, los cuales les logras dar algo de pelea pero por desgaste mueres "),
+        }, [&] {
+            if (seleccion_pu_der == 0) {
+                estado_actual3 = estadosit1_3::salir;
+            } 
+            screen_pu_der.ExitLoopClosure()();
+
+        }));
+        if(estado_actual3 == estadosit1_3::salir)return false;
+    }
+
+    /**/
 
     return false;
 }
