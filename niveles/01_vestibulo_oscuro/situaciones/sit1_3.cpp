@@ -144,7 +144,7 @@ bool sit1_3(){
     auto screen3 = ScreenInteractive::Fullscreen();
     estadosit1_3 estado_actual3 = estadosit1_3::vivo;
 
-    std::vector<std::string> opcines3 = { "Explorar la sala" };
+    std::vector<std::string> opcines3 = {"Explorar la sala"};
     int seleccion3 = 0;
 
     screen3.Loop(crear_dialogo(opcines3, seleccion3, {
@@ -1280,7 +1280,7 @@ bool sit1_3(){
         if(estado_actual3 == estadosit1_3::salir)return false;
     }
 
-    /**/
+    /*termina la sit1_3 siiiuuuuuuuuuuuu*/
 
     return false;
 }
