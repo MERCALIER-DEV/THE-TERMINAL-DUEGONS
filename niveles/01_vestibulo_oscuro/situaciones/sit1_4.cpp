@@ -66,6 +66,41 @@ bool sit1_4(){
         }));
     }
 
+    if (estado_actual == estadosit1_4::vivo) return true;
+
+    /* ************************************************************************************************************************************
+    ramificaciones al no tomar el anillo***************************************************************************************************************************************** */
+
+    if (estado_actual == estadosit1_4::no_tomar_anillo) {
+        std::vector<std::string> opcines = {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+        };
+        int seleccion = 0;
+
+        screen.Loop(crear_dialogo(opcines, seleccion, {
+            paragraph("decides no tomar el anillo y continuar por el pasillo, despues de un rato encuentras una puerta que te lleva a una sala vigilada por un guardia el guardia te ve como una amenaza y se dirige hacia ti, que vas hacer?"),
+        }, [&] {
+            if (seleccion == 0) {
+                estado_actual = estadosit1_4::vivo;
+            } else if (seleccion == 1) {
+                estado_actual = estadosit1_4::no_tomar_anillo;
+            } else if (seleccion == 2) {
+                estado_actual = estadosit1_4::no_tomar_anillo;
+            } else if (seleccion == 3) {
+                estado_actual = estadosit1_4::no_tomar_anillo;
+            } else if (seleccion == 4) {
+                estado_actual = estadosit1_4::no_tomar_anillo;
+            }
+            screen.ExitLoopClosure()();
+        }));
+    }
+
+
+
 
    return true; 
 }
